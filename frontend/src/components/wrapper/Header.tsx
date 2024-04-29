@@ -48,9 +48,16 @@ const Header = () => {
         <li className=" absolute left-5 top-0 md:static sm:block">
           <Logo className="cursor-pointer" link={true} />
         </li>
-        <li className={`${open ? "sm:block" : "hidden md:block"}`}>
-          <Navicon label="Contact" to="/contact" />
-        </li>
+        {(loggedIn && userData?.role === "admin") ||
+        userData?.role === "manager" ? (
+          <li className={`${open ? "sm:block" : "hidden md:block"}`}>
+            <Navicon label="Dashboard" to="/private/r2/dashboard" />
+          </li>
+        ) : (
+          <li className={`${open ? "sm:block" : "hidden md:block"}`}>
+            <Navicon label="Contact" to="/contact" />
+          </li>
+        )}
         {loggedIn ? (
           <>
             <li

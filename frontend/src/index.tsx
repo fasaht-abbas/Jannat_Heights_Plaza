@@ -8,7 +8,7 @@ import { store, persistor } from "./redux/store";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { env } from "./utils/validate";
 import { PersistGate } from "redux-persist/integration/react";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 // import reportWebVitals from './reportWebVitals';
 

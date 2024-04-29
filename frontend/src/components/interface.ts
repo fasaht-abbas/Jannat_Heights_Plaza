@@ -17,5 +17,12 @@ export interface UserDTO {
   phone?: string;
   CNIC?: string;
   verifiedEmail?: Boolean;
-  verifiedPhone?: Boolean;
+}
+
+export interface AssetDTO {
+  _id: string;
+  type: string;
+  for: string;
+  link: string;
+  set_as_home_page: string;
 }

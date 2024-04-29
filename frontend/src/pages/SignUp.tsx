@@ -2,10 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import LayoutWrapper from "../components/wrapper/LayoutWrapper";
 import Form from "../components/reuseables/Form";
 import InputField from "../components/reuseables/InputField";
-import Button from "../components/reuseables/Button";
 import Navicon from "../components/reuseables/Navicon";
 import { api, handleError } from "../utils/axios";
-import { env, validateInput, validateMatch } from "../utils/validate";
+import { validateInput, validateMatch } from "../utils/validate";
 import { emailRegex, nameRegex, passRegex, phoneRegex } from "../utils/regex";
 import GoogleLoginButton from "../components/reuseables/GoogleLoginButton";
 
@@ -79,7 +78,14 @@ const SignUp = () => {
   return (
     <LayoutWrapper>
       <div className=" py-10 px-4 flex justify-center align-middle">
-        <Form name="Sign Up Form" btnName="SignUp" onSubmit={handleSignUp}>
+        <Form
+          name="Sign Up Form"
+          btnName="Create account"
+          onSubmit={handleSignUp}
+        >
+          <p className="ml-1 text-primary  font-main text-sm">
+            Fill all fields and click create account
+          </p>
           <div className="md:flex  justify-between gap-4">
             <InputField ref={nameRef} placeholder="Enter full name" />
             <InputField ref={phoneRef} type="tel" placeholder="Enter phone" />

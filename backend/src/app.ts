@@ -5,7 +5,7 @@ import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
 import createHttpError, { isHttpError } from "http-errors";
 import passport from "passport";
-import session from "express-session";
+import assetRoutes from "./routes/assetRoutes";
 import "./utils/passport";
 import cookieParser from "cookie-parser";
 
@@ -27,6 +27,7 @@ app.use(passport.initialize());
 //routes related to the user
 app.use("/api/v1/user", userRoutes);
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/asset", assetRoutes);
 
 //error hnadlers
 app.use((req, res, next) => {

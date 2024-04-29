@@ -1,4 +1,4 @@
-import axios, { AxiosError, isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import { env } from "./validate";
 import { store } from "../redux/store";
 import { jwtDecode } from "jwt-decode";

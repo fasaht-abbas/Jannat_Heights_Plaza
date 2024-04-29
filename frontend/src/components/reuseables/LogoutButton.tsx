@@ -1,5 +1,3 @@
-import React from "react";
-import Button from "./Button";
 import { logout } from "../../redux/authSlice";
 import { useDispatch } from "react-redux";
 import { appDispatch } from "../../redux/store";
@@ -20,9 +18,11 @@ const LogoutButton = () => {
           withCredentials: true,
         }
       );
-      dispatch(logout());
-      navigate("/login");
-      toast.success("user Logged Out");
+      if (data?.success) {
+        dispatch(logout());
+        navigate("/login");
+        toast.success("user Logged Out");
+      }
     } catch (error) {
       handleError(error);
     }

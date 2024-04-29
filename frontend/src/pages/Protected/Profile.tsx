@@ -6,12 +6,14 @@ import { RootState } from "../../redux/store";
 import { FaPen } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import Button from "../../components/reuseables/Button";
+
 const Profile = () => {
+  const Person = "/person.png";
   const navigate = useNavigate();
   const userData = useSelector((state: RootState) => state.auth.userData);
   return (
     <LayoutWrapper>
-      <div className="m-4 p-2 md:p-6  shadow-xl  ">
+      <div className=" border-secondary m-1 p-0  md:m-4  md:p-6  shadow-2xl md:mt-12  ">
         <p className=" text-center  font-main text-primary font-bold text-2xl">
           Profile Information
         </p>
@@ -43,21 +45,12 @@ const Profile = () => {
               label="Phone"
               disabled={true}
               value={userData?.phone}
-              button={
-                userData?.verifiedPhone ? (
-                  <p className=" text-success ">verified </p>
-                ) : userData?.phone?.length ? (
-                  <Link to={"/private/verify-email"}>
-                    <p className=" decoration-danger text-danger">verify now</p>
-                  </Link>
-                ) : (
-                  <p className=" decoration-danger text-secondary">add phone</p>
-                )
-              }
+              placeholder="no phone added"
             />
 
             <InputField
               label="Address"
+              placeholder="No Address given"
               disabled={true}
               value={userData?.address}
             />
@@ -65,25 +58,41 @@ const Profile = () => {
 
           <div className="col-span-4 mx-auto mt-2">
             <div className="flex flex-col items-center ">
-              <div className=" rounded-full ">
+              <div className=" rounded-full size-40 overflow-hidden  shadow-2xl">
                 <img
-                  className=" rounded-full border-2 border-secondary object-cover  "
-                  src={userData?.profilePhoto}
-                  alt={userData?.name}
+                  className=" object-cover size-full  "
+                  alt="nothing here"
+                  src={userData?.profilePhoto ? userData?.profilePhoto : Person}
                 />
               </div>
-              <InputField label="CNIC" value={userData?.CNIC} disabled={true} />
+              <InputField
+                placeholder="No CNIC added"
+                label="CNIC"
+                value={userData?.CNIC}
+                disabled={true}
+              />
             </div>
           </div>
-          <div className=" col-span-12 flex justify-end mr-2 gap-2 items-center ">
+        </div>
+        <div className=" col-span-12 flex justify-end mr-2 gap-2 items-center ">
+          <Button
+            onClick={() => navigate("/private/change-information")}
+            className=" text-primary bg-opacity-0 border-none hover:bg-opacity-5 font-bold"
+          >
+            <FaPen className="" />
+            <p className="font-bold font-main">Change Information</p>
+          </Button>
+          {userData?.googleId === null || undefined || "" ? (
             <Button
-              onClick={() => navigate("/private/change-information")}
+              onClick={() => navigate("/reset-password")}
               className=" text-primary bg-opacity-0 border-none hover:bg-opacity-5 font-bold"
             >
-              <FaPen />
-              <p className=" font-bold font-main">Change Information</p>
+              <FaPen className="text-danger" />
+              <p className="text-danger font-bold font-main">Reset Password</p>
             </Button>
-          </div>
+          ) : (
+            ""
+          )}
         </div>
       </div>
     </LayoutWrapper>

@@ -3,6 +3,13 @@ import defaultTheme from "tailwindcss/defaultTheme";
 module.exports = {
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
+    screens: {
+      xs: "0px",
+      sm: "340px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+    },
     colors: {
       primary: "#000080",
       secondary: "#000000",

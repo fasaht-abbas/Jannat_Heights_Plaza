@@ -17,6 +17,10 @@ export const env = cleanEnv(process.env, {
   ENVIRONMENT: str(),
   ACCESS_TOKEN_EXPIRY_TIME: str(),
   REFRESH_TOKEN_EXPIRY_TIME: str(),
+  NODEMAILER_GMAIL_USER: str(),
+  NODEMAILER_GMAIL_PASSWORD: str(),
+  NODEMAILER_SMTP_HOST: str(),
+  NODEMAILER_SMTP_PORT: port(),
 });
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const passRegex = /^(?=.*[a-zA-Z])(?=.*\d).*$/;

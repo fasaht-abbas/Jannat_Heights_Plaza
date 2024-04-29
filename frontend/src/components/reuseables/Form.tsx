@@ -18,7 +18,7 @@ const Form: React.FC<FormType> = ({
 }) => {
   return (
     <form
-      className={`${className}  w-10/12 sm:w-8/12 md:w-6/12 lg:w-4/12 p-4 shadow-xl`}
+      className={`${className} m-1  md:m-4  w-10/12 sm:w-8/12 md:w-6/12 lg:w-4/12 p-4 shadow-2xl`}
       onSubmit={onSubmit}
     >
       <div className="w-full mb-2  text-center align-middle ">

@@ -36,7 +36,9 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       <div
         className={`${containerClass} mt-4 grid grid-cols-12 items-center justify-start gap-0 `}
       >
-        <p className="text-secondary  col-span-2 font-bold ">{label}</p>
+        <p className="text-secondary  col-span-2 font-bold  text-sm  md:text-lg">
+          {label}
+        </p>
         <div
           className={`${
             label ? "col-span-8" : "col-span-12"
@@ -49,7 +51,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
             placeholder={placeholder}
             value={value}
             onChange={onChange}
-            className={` border-b my-1 border-secondary p-1 text-primary focus:outline-none ${className} ${
+            className={` text-sm  md:text-lg bg-opacity-0 disabled:bg-opacity-0  bg-accent border-b my-1 border-secondary p-1 text-primary focus:outline-none ${className} ${
               width ? width : "w-full"
             } `}
             {...rest}

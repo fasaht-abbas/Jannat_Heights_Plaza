@@ -6,12 +6,13 @@ import { Outlet } from "react-router-dom";
 import Loading from "../components/reuseables/Loading";
 import UnAuthorizedPage from "../components/reuseables/UnAuthorizedPage";
 const Private = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [authorized, setAuthorized] = useState(false);
   const token = useSelector((state: RootState) => state.auth.token);
 
   const checkUser = async () => {
     try {
+      setLoading(true);
       const { data } = await protectedApi.get("/api/v1/auth/protected");
       if (data?.success) {
         setLoading(false);

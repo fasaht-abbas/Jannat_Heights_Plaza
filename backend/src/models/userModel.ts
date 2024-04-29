@@ -31,11 +31,14 @@ const userSchema = new Schema(
     profilePhoto: {
       type: String,
     },
-    verifiedEmail: {
-      type: Boolean,
-      default: false,
+    photo_cd_public_id: {
+      type: String,
     },
-    verifiedPhone: {
+    otp: {
+      type: String,
+      default: null,
+    },
+    verifiedEmail: {
       type: Boolean,
       default: false,
     },

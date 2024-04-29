@@ -16,7 +16,7 @@ const GoogleLoginButton = () => {
       type="button"
       className="  mt-6 w-full hover:bg-primary hover:bg-opacity-10 bg-white text-secondary border-2 rounded-sm"
     >
-      <FaGoogle size={20} /> Login with Google
+      <FaGoogle size={20} /> OR continue with Google
     </Button>
   );
 };

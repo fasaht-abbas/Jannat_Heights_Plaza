@@ -72,13 +72,16 @@ const Login = () => {
       setValidationErrors(validate.errors);
     }
   };
+  useEffect(() => {
+    emailref?.current?.focus();
+  }, []);
   return (
     <LayoutWrapper>
-      <div className="py-10 px-4 flex justify-center ">
+      <div className="py-10  px-4 flex justify-center ">
         <Form
           name="Login Here"
           btnName="Login"
-          className=" md:w-4/12"
+          className=" md:w-4/12  "
           onSubmit={handleSubmit}
         >
           <InputField
@@ -95,8 +98,14 @@ const Login = () => {
               ))}
             </ul>
           )}
-          <GoogleLoginButton />
-          <p className="mt-6 font-main text-sm ">
+          <Navicon
+            label="forget password?"
+            to="/reset-password"
+            className="text-danger font-accent
+ tracking-tight text-xs  hover:border-b-2 border-danger hover:text-danger"
+          />
+
+          <p className="mt-4 font-main text-sm ">
             Don't have account?
             <Navicon
               label="SignUp"
@@ -104,6 +113,7 @@ const Login = () => {
               to="/signup"
             />
           </p>
+          <GoogleLoginButton />
         </Form>
       </div>
     </LayoutWrapper>

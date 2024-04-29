@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { appDispatch } from "../redux/store";
 import { api, handleError } from "../utils/axios";
 import { login } from "../redux/authSlice";
 import Loading from "../components/reuseables/Loading";
-import toast from "react-hot-toast";
 const Authorization = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const dispatch: appDispatch = useDispatch();
@@ -38,11 +36,10 @@ const Authorization = () => {
               phone: data?.returnUser?.phone,
               CNIC: data?.returnUser?.CNIC,
               verifiedEmail: data?.returnUser?.verifiedEmail,
-              verifiedPhone: data?.returnUser?.verifiedPhone,
             },
           })
         );
-        if (!data?.returnUser?.verified) {
+        if (!data?.returnUser?.verifiedEmail) {
           navigate("/private/verify-email");
         } else {
           navigate("/", { replace: true });

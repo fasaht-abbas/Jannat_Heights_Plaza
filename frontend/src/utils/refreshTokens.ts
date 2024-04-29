@@ -1,4 +1,3 @@
-import { jwtDecode } from "jwt-decode";
 import { login } from "../redux/authSlice";
 import { store } from "../redux/store";
 import { api } from "./axios";
@@ -21,6 +20,7 @@ export const refreshing = async () => {
           address: data?.returnUser?.address,
           phone: data?.returnUser?.phone,
           CNIC: data?.returnUser?.CNIC,
+          verifiedEmail: data?.returnUser?.verifiedEmail,
         },
       })
     );
