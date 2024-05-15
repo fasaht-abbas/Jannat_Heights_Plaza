@@ -14,10 +14,8 @@ import {
   generateRefreshToken,
   verifyJwt,
 } from "../utils/GenerateJwt";
-import cookieParser from "cookie-parser";
 import mongoose from "mongoose";
 import UserDTO from "../types/userType";
-import { token } from "morgan";
 
 export const registerWithEmail: RequestHandler<
   unknown,
@@ -66,16 +64,18 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     const decode = await verifyJwt(secret, env.JWT_ACCESS_SECRET);
     if (decode?.id) {
       const UserId = new mongoose.Types.ObjectId(decode?.id);
-      const returnUser = await UserModel.findById(UserId).select("-password");
+      const returnUser: UserDTO = await UserModel.findById(UserId).select(
+        "-password"
+      );
       if (!returnUser) {
-        return createHttpError(400, "Error user not found");
+        throw createHttpError(400, "Error user not found");
       }
       return res.status(200).send({
         success: true,
         returnUser,
       });
     } else {
-      return createHttpError(400, "Error user not found");
+      throw createHttpError(400, "Error user not found");
     }
   } catch (error) {
     next(error);
@@ -122,7 +122,6 @@ export const LoginEmailController: RequestHandler<
 export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
   try {
     if (req.user) {
-      /// i think that i should use the separate controller for the local stretegy
       let user = req.user as UserDTO;
       const accessToken = await generateAccessToken({ id: user?._id });
       const refreshToken = await generateRefreshToken({ id: user?._id });
@@ -135,7 +134,7 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
         env.FRONTEND_URL +
           `/authorization?name=${user.name}&email=${user.email}&secret=${accessToken}`
       );
-    } else createHttpError(400, "No user found in the stretegy");
+    } else throw createHttpError(400, "No user found in the stretegy");
   } catch (error) {
     next(error);
   }

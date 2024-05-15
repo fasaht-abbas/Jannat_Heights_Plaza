@@ -40,7 +40,7 @@ export const sendOTP: RequestHandler = async (req, res, next) => {
     const user = await UserModel.findOne({ email });
 
     if (!user) {
-      return createHttpError(404, "User is not registered");
+      throw createHttpError(404, "User is not registered");
     }
     const OTP = Math.random().toString(36).slice(-6);
     const saved = await UserModel.findByIdAndUpdate(user?.id, {
@@ -48,7 +48,7 @@ export const sendOTP: RequestHandler = async (req, res, next) => {
     });
 
     if (!saved) {
-      return createHttpError(400, "Could not generate OTP");
+      throw createHttpError(400, "Could not generate OTP");
     }
 
     const options = {
@@ -77,7 +77,7 @@ export const verifyOTP: RequestHandler = async (req, res, next) => {
     const { email, OTP } = req.body;
     const user = await UserModel.findOne({ email });
     if (!user) {
-      return createHttpError(400, "could'nt Find user");
+      throw createHttpError(400, "could'nt Find user");
     }
     if (user?.otp === OTP) {
       const verified = await UserModel.findByIdAndUpdate(user?.id, {
@@ -86,12 +86,12 @@ export const verifyOTP: RequestHandler = async (req, res, next) => {
       });
 
       if (!verified) {
-        return createHttpError(400, "Error in verifying the code");
+        throw createHttpError(400, "Error in verifying the code");
       }
       return res.status(200).send({
         success: true,
       });
-    } else return createHttpError(403, "Invalid or Expired Token");
+    } else throw createHttpError(403, "Invalid or Expired Token");
   } catch (error) {
     next(error);
   }
@@ -101,12 +101,12 @@ export const updateProfile: RequestHandler = async (req, res, next) => {
   try {
     const { id, name, phone, address, CNIC } = req.body;
     if (!id) {
-      return createHttpError(404, "user error");
+      throw createHttpError(404, "user error");
     }
     const userId = new mongoose.Types.ObjectId(id);
     const foundUser = await UserModel.findById(userId);
     if (!foundUser) {
-      return createHttpError(404, "user not found");
+      throw createHttpError(404, "user not found");
     } else if (req.file) {
       if (foundUser?.photo_cd_public_id) {
         await cloudinary.uploader.destroy(foundUser?.photo_cd_public_id);
@@ -128,7 +128,7 @@ export const updateProfile: RequestHandler = async (req, res, next) => {
     });
 
     if (!updateUser) {
-      return createHttpError(400, "Could not update the user");
+      throw createHttpError(400, "Could not update the user");
     }
     return res.status(200).send({
       success: true,
@@ -142,7 +142,7 @@ export const updatePassword: RequestHandler = async (req, res, next) => {
   try {
     const { email, newPassword } = req.body;
     if (!email || !newPassword) {
-      return createHttpError("Cannot change password something is missing");
+      throw createHttpError("Cannot change password something is missing");
     }
     const user = await UserModel.findOne({ email: email });
     if (user) {
@@ -153,7 +153,7 @@ export const updatePassword: RequestHandler = async (req, res, next) => {
         success: true,
       });
     } else {
-      return createHttpError("User not found");
+      throw createHttpError("User not found");
     }
   } catch (error) {
     next(error);

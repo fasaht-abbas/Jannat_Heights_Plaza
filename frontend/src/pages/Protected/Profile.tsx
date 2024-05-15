@@ -13,7 +13,7 @@ const Profile = () => {
   const userData = useSelector((state: RootState) => state.auth.userData);
   return (
     <LayoutWrapper>
-      <div className=" border-secondary m-1 p-0  md:m-4  md:p-6  shadow-2xl md:mt-12  ">
+      <div className=" mx-[2vw] md:mx-[4vw] border-secondary m-1 p-0  md:m-4  md:p-6  shadow-2xl md:mt-12 w-auto  ">
         <p className=" text-center  font-main text-primary font-bold text-2xl">
           Profile Information
         </p>

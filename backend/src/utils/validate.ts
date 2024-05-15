@@ -48,7 +48,7 @@ export const validateRegisterWithEmail = (data: RegisterWithEmailType) => {
   if (!checkValidity(data?.phone.toString(), phoneRegex)) {
     throw createHttpError(404, "A valid phone required");
   }
-  if (!checkValidity(data.name.toString(), nameRegex)) {
+  if (!checkValidity(data?.name.toString(), nameRegex)) {
     throw createHttpError(404, "A valid name is required");
   }
 };

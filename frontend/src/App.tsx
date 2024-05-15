@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-import Appartments from "./pages/Appartments";
+
 import Halls from "./pages/Halls";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
@@ -25,6 +25,7 @@ import Dashboard from "./pages/Protected/Management/Dashboard/Dashboard";
 import ManageTeam from "./pages/Protected/Management/Dashboard/ManageTeam";
 import ManageApartment from "./pages/Protected/Management/Dashboard/ManageApartment";
 import ManageBookings from "./pages/Protected/Management/Dashboard/ManageBookings";
+import Apartments from "./pages/Apartments";
 
 function App() {
   const dispatch: appDispatch = useDispatch();
@@ -40,6 +41,7 @@ function App() {
       dispatch(logout());
     }
   };
+
   useEffect(() => {
     refresh();
   }, []);
@@ -48,7 +50,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<UnAuthorizedPage />} />
-        <Route path="/appartments" element={<Appartments />} />
+        <Route path="/apartments" element={<Apartments />} />
         <Route path="/halls" element={<Halls />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />

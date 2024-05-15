@@ -14,6 +14,7 @@ interface InputFieldProps {
   disabled?: Boolean;
   label?: string;
   width?: string;
+  labelClass?: string;
 }
 const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
   (
@@ -28,6 +29,7 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       button,
       width,
       label,
+      labelClass,
       ...rest
     },
     ref
@@ -36,7 +38,9 @@ const InputField = forwardRef<HTMLInputElement, InputFieldProps>(
       <div
         className={`${containerClass} mt-4 grid grid-cols-12 items-center justify-start gap-0 `}
       >
-        <p className="text-secondary  col-span-2 font-bold  text-sm  md:text-lg">
+        <p
+          className={`${labelClass} text-secondary  col-span-4 font-bold  text-sm  md:text-lg`}
+        >
           {label}
         </p>
         <div

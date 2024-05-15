@@ -24,5 +24,14 @@ export interface AssetDTO {
   type: string;
   for: string;
   link: string;
-  set_as_home_page: string;
+  set_as_home_page?: string;
+}
+
+export interface ApartDTO {
+  _id: string;
+  no: string;
+  floor: string;
+  rent: string;
+  bookings: [""];
+  status: string;
 }

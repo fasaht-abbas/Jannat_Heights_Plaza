@@ -7,6 +7,8 @@ import { api, handleError } from "../utils/axios";
 import { validateInput, validateMatch } from "../utils/validate";
 import { emailRegex, nameRegex, passRegex, phoneRegex } from "../utils/regex";
 import GoogleLoginButton from "../components/reuseables/GoogleLoginButton";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const emailRef = useRef<HTMLInputElement>(null);
@@ -14,6 +16,8 @@ const SignUp = () => {
   const cnfrmPassRef = useRef<HTMLInputElement>(null);
   const phoneRef = useRef<HTMLInputElement>(null);
   const nameRef = useRef<HTMLInputElement>(null);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const [validationErrors, setValidationErrors] = useState([""]);
 
@@ -62,7 +66,8 @@ const SignUp = () => {
           password: passRef.current?.value,
         });
         if (data?.success) {
-          alert("Successfully created account");
+          toast.success("Successfully created account");
+          navigate("/login");
         }
       } catch (error) {
         handleError(error);
@@ -77,7 +82,7 @@ const SignUp = () => {
   }, []);
   return (
     <LayoutWrapper>
-      <div className=" py-10 px-4 flex justify-center align-middle">
+      <div className=" min-h-[80vh] flex justify-center items-center align-middle">
         <Form
           name="Sign Up Form"
           btnName="Create account"

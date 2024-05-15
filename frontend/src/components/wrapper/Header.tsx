@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import Navicon from "../reuseables/Navicon";
 import Logo from "../reuseables/Logo";
-import { MenuIcon } from "../icons";
-import { CloseIcon } from "../icons";
+import { RiMenu2Fill } from "react-icons/ri";
+import { MdOutlineClose } from "react-icons/md";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import LogoutButton from "../reuseables/LogoutButton";
@@ -40,7 +40,7 @@ const Header = () => {
           <Navicon label="Home" to="/" />
         </li>
         <li className={`${open ? "sm:block" : "hidden md:block"}`}>
-          <Navicon label="Appartment" to="/appartments" />
+          <Navicon label="Apartment" to="/apartments" />
         </li>
         <li className={`${open ? "sm:block" : "hidden md:block"}`}>
           <Navicon label="Hall" to="/halls" />
@@ -112,9 +112,9 @@ const Header = () => {
 
         <li
           onClick={() => NavToggle()}
-          className=" cursor-pointer block md:hidden absolute right-5 top-1"
+          className=" cursor-pointer block md:hidden absolute right-5 top-2"
         >
-          {open ? <CloseIcon /> : <MenuIcon />}
+          {open ? <MdOutlineClose /> : <RiMenu2Fill />}
         </li>
       </ul>
     </nav>

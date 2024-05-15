@@ -4,8 +4,9 @@ import { AssetModel, Asset } from "../models/AssetModel";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import { Apart, ApartModel } from "../models/ApartmentModel";
 
-export const updateApartment: RequestHandler = async (req, res, next) => {
+export const uploadApartmentAssets: RequestHandler = async (req, res, next) => {
   try {
     if (!Array.isArray(req.files)) {
       throw createHttpError(400, "Something went wrong");
@@ -48,6 +49,7 @@ export const getAllApartAssets: RequestHandler = async (req, res, next) => {
       success: true,
       AllExceptHomepage,
       homepage,
+      allAssets,
     });
   } catch (error) {
     next(error);
@@ -83,7 +85,7 @@ export const setOnHompage: RequestHandler = async (req, res, next) => {
   try {
     const received = req.body.id;
     if (!received) {
-      return createHttpError(404, "Id not received");
+      throw createHttpError(404, "Id not received");
     }
     const id = new mongoose.Types.ObjectId(received);
     const update = await AssetModel.findByIdAndUpdate(id, {
@@ -91,7 +93,7 @@ export const setOnHompage: RequestHandler = async (req, res, next) => {
     });
     if (update) return res.status(200).send({ success: true });
     else {
-      return createHttpError(500, "failed updation");
+      throw createHttpError(500, "failed updation");
     }
   } catch (error) {
     next(error);
@@ -104,7 +106,7 @@ export const removeFromHomepage: RequestHandler = async (req, res, next) => {
   try {
     const received = req.body.id;
     if (!received) {
-      return createHttpError(404, "Id not received");
+      throw createHttpError(404, "Id not received");
     }
     const id = new mongoose.Types.ObjectId(received);
     const update = await AssetModel.findByIdAndUpdate(id, {
@@ -115,7 +117,76 @@ export const removeFromHomepage: RequestHandler = async (req, res, next) => {
         success: true,
       });
     } else {
-      return createHttpError(500, "Updation failed");
+      throw createHttpError(500, "Updation failed");
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+// adding a new apartment
+
+export const createNewApart: RequestHandler = async (req, res, next) => {
+  try {
+    const { no, rent, floor } = req.body;
+    if (!no || !rent || !floor) {
+      throw createHttpError(404, "Something is missing ");
+    }
+    const existing = await ApartModel.findOne({ no: no });
+    if (existing) {
+      throw createHttpError(409, "Apartment already exists");
+    }
+    await ApartModel.create({
+      floor: floor,
+      no: no,
+      rent: rent,
+      status: "Available",
+    });
+    return res.status(200).send({
+      success: true,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// returning all the exsisting aparts
+
+export const getAllAparts: RequestHandler = async (req, res, next) => {
+  try {
+    type ArrayApart = Apart[];
+    const allAparts: ArrayApart = await ApartModel.find({});
+    return res.status(200).send({
+      success: true,
+      allAparts,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// updating the apartment
+
+export const updateApartment: RequestHandler = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { rent, no, floor } = req.body;
+    if (id) {
+      const realId = new mongoose.Types.ObjectId(id);
+      const foundApart = await ApartModel.findById(realId);
+      if (!foundApart) {
+        throw createHttpError(404, "apartment not found");
+      }
+      await ApartModel.findByIdAndUpdate(realId, {
+        rent: rent,
+        no: no,
+        floor: floor,
+      });
+      return res.status(200).send({
+        success: true,
+      });
+    } else {
+      throw createHttpError(404, "Id not found");
     }
   } catch (error) {
     next(error);

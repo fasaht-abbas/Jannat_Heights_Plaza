@@ -1,14 +1,16 @@
 import { ObjectId } from "mongodb";
 
 type UserDTO = {
-  _id: ObjectId;
   name: string;
+  _id: string;
   email: string;
-  googleId: string;
+  googleId?: string;
   role: string;
   profilePhoto: string;
-  createdAt: Date;
-  updatedAt: Date;
+  address?: string;
+  phone?: string;
+  CNIC?: string;
+  verifiedEmail?: Boolean;
   __v: number;
 };
 

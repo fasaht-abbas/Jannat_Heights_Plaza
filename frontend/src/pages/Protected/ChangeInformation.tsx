@@ -58,7 +58,7 @@ const ChangeInformation = () => {
       {loading ? (
         <Loading />
       ) : (
-        <div className=" border-secondary m-1 p-0  md:m-4  md:p-6  shadow-2xl md:mt-12 ">
+        <div className=" mx-[2vw] md:mx-[4vw] border-secondary m-1 p-0  md:m-4  md:p-6  shadow-2xl md:mt-12 w-auto ">
           <p className=" text-center  font-main text-primary font-bold text-2xl">
             Change Information
           </p>
@@ -101,7 +101,7 @@ const ChangeInformation = () => {
             </div>
 
             <div className="col-span-4 mx-auto mt-2">
-              <div className="flex flex-col items-center  justify-center align-middle">
+              <div className="flex flex-col items-center  justify-center gap-4 align-middle">
                 <div className="rounded-full size-40 overflow-hidden shadow-2xl">
                   <img
                     className="object-cover size-full "
@@ -117,26 +117,41 @@ const ChangeInformation = () => {
                     height={100}
                   />
                 </div>
-                <div className="relative mt-4 h-8 border-dotted   border-2 rounded-sm w-full cursor-pointer">
-                  <p className="font-accent text-sm text-center">
-                    {photo ? (
-                      photo.name
-                    ) : (
-                      <div className="flex justify-center items-center ">
-                        <FaImage /> <p>click to upload new photo</p>
-                      </div>
-                    )}
-                  </p>
-                  <InputField
-                    type="file"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      if (e.target?.files && e.target?.files[0]) {
-                        setPhoto(e.target?.files[0]);
+                {photo ? (
+                  <div className=" flex flex-col gap-2 w-full justify-center">
+                    <p>{photo?.name}</p>
+                    <Button
+                      onClick={() =>
+                        document.getElementById("upload-Photo")?.click()
                       }
-                    }}
-                    className="absolute inset-0 object-cover size-full  opacity-0 cursor-pointer   "
-                  />
-                </div>
+                      variant="success"
+                      className=" flex   gap-2 justify-center items-center "
+                    >
+                      <FaImage /> <p> change photo</p>
+                    </Button>
+                  </div>
+                ) : (
+                  <Button
+                    onClick={() =>
+                      document.getElementById("upload-Photo")?.click()
+                    }
+                    variant="accent"
+                    className=" flex gap-2 justify-center items-center bg-opacity-50 "
+                  >
+                    <FaImage /> <p> upload new photo</p>
+                  </Button>
+                )}
+                <input
+                  id="upload-Photo"
+                  accept="image/*"
+                  type="file"
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                    if (e.target?.files && e.target?.files[0]) {
+                      setPhoto(e.target?.files[0]);
+                    }
+                  }}
+                  className=" hidden  "
+                />
 
                 <InputField
                   label="CNIC"
@@ -151,11 +166,12 @@ const ChangeInformation = () => {
           </div>
           <div className="col-span-12 flex justify-end mr-2 gap-2 items-center ">
             <Button
+              variant="success"
               onClick={handleSubmit}
-              className="  text-success bg-opacity-0 border-none hover:bg-opacity-5 font-bold"
+              className=" items-center  border-none hover:bg-opacity-5 font-bold"
             >
               <FaFile />
-              <p className=" font-bold font-main">Save Changes</p>
+              <p className="  font-main">Save Changes</p>
             </Button>
           </div>
         </div>

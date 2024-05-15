@@ -12,7 +12,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
   author,
 }) => {
   return (
-    <div>
+    <div className="w-full">
       <Helmet>
         <meta charSet="utf-8" />
         <title>{title}</title>
@@ -22,7 +22,7 @@ const LayoutWrapper: React.FC<LayoutWrapperProps> = ({
       </Helmet>
       <Header />
       {/* make the minheight auto on deployment */}
-      <main style={{ minHeight: "80vh" }}>{children}</main>
+      <main style={{ minHeight: "80vh", width: "100vW" }}>{children}</main>
       <Footer />
     </div>
   );

@@ -9,28 +9,40 @@ interface DashProps {
 const DashWrapper: React.FC<DashProps> = ({ children }) => {
   const userData = useSelector((state: RootState) => state.auth.userData);
   return (
-    <LayoutWrapper>
-      <div className=" flex p-[2vh]  bg-accent  bg-opacity-20">
-        <div className="w-1/6 p-[2vh] rounded-md shadow-2xl fixed  top-35 ">
-          <ul className=" flex flex-col font-main  font-bold space-y-4">
-            <Navicon label="Dashboard" to="/private/r2/dashboard" />
+    <div className=" min-h-[100vh] flex flex-col md:flex-row p-[2vh]  bg-primary bg-opacity-15 gap-4">
+      <div className=" relative bg-primary md:h-[96vh] w-full md:w-1/6 p-[2vh] rounded-md shadow-2xl  md:fixed  top-35 flex-wrap ">
+        <div className=" flex md:flex-col items-center mx-auto md:items-start font-main  font-bold flex-wrap justify-evenly space-y-4">
+          <Navicon
+            footicon={true}
+            className="mt-3"
+            label="Dashboard"
+            to="/private/r2/dashboard"
+          />
+          <Navicon
+            footicon={true}
+            label="Manage Appartment"
+            to="/private/r2/manage-apartments"
+          />
+          <Navicon footicon={true} label="Bookings" to="/private/r2/bookings" />
+          {userData?.role === "admin" && (
             <Navicon
-              label="Manage Appartment"
-              to="/private/r2/manage-apartments"
+              footicon={true}
+              label="Manage Team"
+              to="/private/r1/manage-team"
             />
-            <Navicon label="Bookings" to="/private/r2/bookings" />
-            {userData?.role === "admin" ? (
-              <Navicon label="Manage Team" to="/private/r1/manage-team" />
-            ) : (
-              ""
-            )}
-          </ul>
-        </div>
-        <div className="w-5/6  ml-[17vW]  ">
-          <main style={{ minHeight: "80vh" }}>{children}</main>
+          )}
+          <Navicon
+            footicon={true}
+            className=" md:absolute bottom-2 left-2"
+            label="Exit"
+            to="/"
+          />
         </div>
       </div>
-    </LayoutWrapper>
+      <div className="w-full md:ml-[17vw] flex justify-center  ">
+        <main className=" min-h-[80vh] w-full">{children}</main>
+      </div>
+    </div>
   );
 };
 

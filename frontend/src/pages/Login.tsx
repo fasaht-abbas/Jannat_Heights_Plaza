@@ -77,7 +77,7 @@ const Login = () => {
   }, []);
   return (
     <LayoutWrapper>
-      <div className="py-10  px-4 flex justify-center ">
+      <div className="min-h-[80vh] flex justify-center items-center align-middle ">
         <Form
           name="Login Here"
           btnName="Login"

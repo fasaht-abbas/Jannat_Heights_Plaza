@@ -8,7 +8,22 @@ const appartSchema = new Schema(
     },
     floor: {
       type: String,
-      enum: ["2nd", "3rd", "4rth", "5th", "6th"],
+      enum: ["2", "3", "4", "5", "6"],
+      required: true,
+    },
+    rent: {
+      type: String,
+      required: true,
+    },
+    bookings: {
+      type: mongoose.Types.ObjectId,
+      ref: "booking",
+    },
+    //these booking would be of the type booking
+    status: {
+      type: String,
+      enum: ["Booked", "Available"],
+      default: "Available",
     },
   },
   { timestamps: true }
