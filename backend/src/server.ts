@@ -3,9 +3,6 @@ import dotenv from "dotenv";
 import { env } from "./utils/validate";
 import mongoose from "mongoose";
 import colors from "colors";
-import path from "path";
-import { fileURLToPath } from "url";
-import express from "express";
 
 // Load environment variables
 dotenv.config();
@@ -23,13 +20,6 @@ mongoose
     });
   })
   .catch(console.error);
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-app.use(express.static(path.join(__dirname, "../frontend/build")));
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../frontend/build/index.html"));
-});
 
 app.get("/", (req, res) => {
   res.send("Congrats App is working");
