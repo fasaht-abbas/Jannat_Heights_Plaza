@@ -31,6 +31,6 @@ const appartSchema = new Schema(
 
 type Apart = InferSchemaType<typeof appartSchema>;
 
-const ApartModel = mongoose.model<Apart>("appart", appartSchema);
+const ApartModel = mongoose.model<Apart>("apart", appartSchema);
 
 export { Apart, ApartModel };

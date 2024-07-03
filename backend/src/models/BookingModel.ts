@@ -2,10 +2,6 @@ import mongoose, { InferSchemaType, Schema } from "mongoose";
 
 const bookingSchema = new Schema(
   {
-    refId: {
-      type: String,
-      required: true,
-    },
     from: {
       type: Date,
       required: true,
@@ -14,16 +10,35 @@ const bookingSchema = new Schema(
       type: Date,
       required: true,
     },
+    booking_time: {
+      type: Date,
+      required: true,
+    },
     // this iss not the final model feel free to modify it kion k ama ne tv chalaya hua hai
-    payment: {
-      advance: {
-        amount: String,
-        status: ["clear", "pending"],
-      },
-      remaining: {
-        amount: String,
-        status: ["clear", "pending"],
-      },
+    status: {
+      type: String,
+      enum: ["Processing", "Confirmed", "Expired", "Canceled"],
+      default: "Processing",
+    },
+    payment_meathod: {
+      type: String,
+      enum: ["advance", "on_check_in"],
+    },
+    payment_cleared: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    payment_amount: {
+      type: Number,
+    },
+    payment_receipt: {
+      type: String,
+    },
+    apartment: {
+      type: mongoose.Types.ObjectId,
+      ref: "apart",
+      required: true,
     },
     customer: {
       type: mongoose.Types.ObjectId,

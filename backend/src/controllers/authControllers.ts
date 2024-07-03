@@ -109,7 +109,7 @@ export const LoginEmailController: RequestHandler<
           accessToken: accessToken,
         });
       } else {
-        throw createHttpError(401, "Incorrect Password");
+        throw createHttpError(500, "Incorrect Password");
       }
     } else {
       throw createHttpError(404, "User Not found");

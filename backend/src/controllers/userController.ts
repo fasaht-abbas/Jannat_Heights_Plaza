@@ -1,5 +1,5 @@
 import { RequestHandler } from "express";
-import { UserModel } from "../models/userModel";
+import { User, UserModel } from "../models/userModel";
 import createHttpError from "http-errors";
 import { sendMessage } from "../utils/nodemailer";
 import { uploadOnCloudinary } from "../utils/cloudinary";
@@ -155,6 +155,41 @@ export const updatePassword: RequestHandler = async (req, res, next) => {
     } else {
       throw createHttpError("User not found");
     }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAllUsers: RequestHandler = async (req, res, next) => {
+  try {
+    type ArrayUsers = User[];
+    const users: ArrayUsers = await UserModel.find({});
+    if (users) {
+      res.status(200).send({
+        success: true,
+        users,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const UpdateUserRole: RequestHandler = async (req, res, next) => {
+  try {
+    const { uid } = req.params;
+    const { role } = req.body;
+
+    if (!uid) {
+      throw createHttpError(404, "Could not find userId");
+    }
+    const id = new mongoose.Types.ObjectId(uid);
+    await UserModel.findByIdAndUpdate(id, {
+      role: role,
+    });
+    return res.status(200).send({
+      success: true,
+    });
   } catch (error) {
     next(error);
   }
