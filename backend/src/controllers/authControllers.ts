@@ -64,9 +64,9 @@ export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
     const decode = await verifyJwt(secret, env.JWT_ACCESS_SECRET);
     if (decode?.id) {
       const UserId = new mongoose.Types.ObjectId(decode?.id);
-      const returnUser: UserDTO = await UserModel.findById(UserId).select(
+      const returnUser: UserDTO = (await UserModel.findById(UserId).select(
         "-password"
-      );
+      )) as UserDTO;
       if (!returnUser) {
         throw createHttpError(400, "Error user not found");
       }
