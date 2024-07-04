@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: Jannat Heights Plaza
+    env: node
+    plan: automatic
+    buildCommand: npm run build
+    startCommand: npm start
