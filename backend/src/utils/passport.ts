@@ -2,7 +2,8 @@ import passport from "passport";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { env } from "./validate";
 import bcrypt from "bcrypt";
-import { UserModel } from "../models/userModel";
+import { User, UserModel } from "../models/userModel";
+import UserDTO from "../types/userType";
 passport.use(
   new GoogleStrategy(
     {
@@ -14,9 +15,10 @@ passport.use(
     },
     async (req, accessToken, refreshToken, profile, cb) => {
       try {
-        const exsistingUser = await UserModel.findOne({
+        const exsistingUser: UserDTO = (await UserModel.findOne({
           googleId: profile.id,
-        });
+        })) as UserDTO;
+
         if (exsistingUser) {
           return cb(null, exsistingUser);
         }
