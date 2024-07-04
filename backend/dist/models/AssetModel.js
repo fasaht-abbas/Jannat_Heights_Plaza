@@ -51,3 +51,4 @@ const assetSchema = new mongoose_1.Schema({
 }, { timestamps: true });
 const AssetModel = mongoose_1.default.model("asset", assetSchema);
 exports.AssetModel = AssetModel;
+//# sourceMappingURL=AssetModel.js.map

@@ -25,3 +25,4 @@ mongoose_1.default
 app_1.default.get("/", (req, res) => {
     res.send("Congrats App is working");
 });
+//# sourceMappingURL=server.js.map

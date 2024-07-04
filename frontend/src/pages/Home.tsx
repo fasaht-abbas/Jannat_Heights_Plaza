@@ -149,7 +149,10 @@ const Home = () => {
                 >
                   Book Now
                 </Button>
-                <Button className="w-2/4 bg-primary hover:text-white bg-opacity-0 hover:bg-opacity-10 text-primary font-accent border-primary border-2">
+                <Button
+                  onClick={() => navigate("/apartments")}
+                  className="w-2/4 bg-primary hover:text-white bg-opacity-0 hover:bg-opacity-10 text-primary font-accent border-primary border-2"
+                >
                   View More
                 </Button>
               </div>

@@ -1,7 +1,7 @@
 import nodemailer from "nodemailer";
 import { env } from "./validate";
 import createHttpError from "http-errors";
-const transporter = nodemailer.createTransport({
+export const transporter = nodemailer.createTransport({
   host: env.NODEMAILER_SMTP_HOST,
   port: env.NODEMAILER_SMTP_PORT,
   secure: env.ENVIRONMENT === "Production",

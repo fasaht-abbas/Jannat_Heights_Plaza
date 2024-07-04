@@ -39,27 +39,28 @@ const checkValidity = (data, regex) => {
 };
 // validating the user credentials of new user
 const validateRegisterWithEmail = (data) => {
-    if (!checkValidity(data?.email.toString(), exports.emailRegex)) {
+    if (!checkValidity(data === null || data === void 0 ? void 0 : data.email.toString(), exports.emailRegex)) {
         throw (0, http_errors_1.default)(404, "A valid Email is required");
     }
-    if (!checkValidity(data?.password.toString(), exports.passRegex)) {
+    if (!checkValidity(data === null || data === void 0 ? void 0 : data.password.toString(), exports.passRegex)) {
         throw (0, http_errors_1.default)(404, "A valid Password is required (at least 8 characters)");
     }
-    if (!checkValidity(data?.phone.toString(), exports.phoneRegex)) {
+    if (!checkValidity(data === null || data === void 0 ? void 0 : data.phone.toString(), exports.phoneRegex)) {
         throw (0, http_errors_1.default)(404, "A valid phone required");
     }
-    if (!checkValidity(data?.name.toString(), exports.nameRegex)) {
+    if (!checkValidity(data === null || data === void 0 ? void 0 : data.name.toString(), exports.nameRegex)) {
         throw (0, http_errors_1.default)(404, "A valid name is required");
     }
 };
 exports.validateRegisterWithEmail = validateRegisterWithEmail;
 // validating the user credentials before logging in
 const validateLoginWithEmail = (data) => {
-    if (!checkValidity(data?.email.toString(), exports.emailRegex)) {
+    if (!checkValidity(data === null || data === void 0 ? void 0 : data.email.toString(), exports.emailRegex)) {
         throw (0, http_errors_1.default)(404, "A valid Email is required");
     }
-    if (!checkValidity(data?.password.toString(), exports.passRegex)) {
+    if (!checkValidity(data === null || data === void 0 ? void 0 : data.password.toString(), exports.passRegex)) {
         throw (0, http_errors_1.default)(404, "A valid Password is required (at least 8 characters)");
     }
 };
 exports.validateLoginWithEmail = validateLoginWithEmail;
+//# sourceMappingURL=validate.js.map

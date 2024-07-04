@@ -7,6 +7,7 @@ import {
   findUser,
   getAllUsers,
   UpdateUserRole,
+  ContactUsMail,
 } from "../controllers/userController";
 import { upload } from "../middlewares/multer";
 const router = express.Router();
@@ -20,4 +21,5 @@ router.get("/get-all-users", getAllUsers);
 router.put("/update-user-role/:uid", UpdateUserRole);
 router.post("/update-user", upload.single("photo"), updateProfile);
 router.put("/update-password", updatePassword);
+router.post("/send-contact-mail", ContactUsMail);
 export default router;

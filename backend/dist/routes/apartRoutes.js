@@ -27,3 +27,4 @@ router.get("/get-single-apart/:id", apartController_1.getSingleApart);
 router.post("/add-new-apart-booking", apartController_1.AdminAddNewBooking);
 router.delete("/delete-booking/:id", apartController_1.DeleteBooking);
 exports.default = router;
+//# sourceMappingURL=apartRoutes.js.map

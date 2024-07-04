@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -10,25 +19,25 @@ const http_errors_1 = __importDefault(require("http-errors"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const GenerateJwt_1 = require("../utils/GenerateJwt");
 const mongoose_1 = __importDefault(require("mongoose"));
-const registerWithEmail = async (req, res, next) => {
+const registerWithEmail = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, phone, name } = req.body;
     try {
         // validation performed
         (0, validate_1.validateRegisterWithEmail)({ email, password, phone, name });
         //checking if the user is exsiting
-        const existingUser = await userModel_1.UserModel.findOne({ email });
+        const existingUser = yield userModel_1.UserModel.findOne({ email });
         if (existingUser) {
             throw (0, http_errors_1.default)(409, "user already exists");
         }
         //creating new user
-        const hashedPassword = await bcrypt_1.default.hashSync(password.toString(), 10);
-        const newuser = await userModel_1.UserModel.create({
+        const hashedPassword = yield bcrypt_1.default.hashSync(password.toString(), 10);
+        const newuser = yield userModel_1.UserModel.create({
             name: name,
             email: email,
             password: hashedPassword,
             phone: phone,
         });
-        const createdUser = await userModel_1.UserModel.findById(newuser._id).select("-password");
+        const createdUser = yield userModel_1.UserModel.findById(newuser._id).select("-password");
         if (createdUser) {
             res.status(200).send({
                 success: true,
@@ -39,16 +48,16 @@ const registerWithEmail = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
+});
 exports.registerWithEmail = registerWithEmail;
-const getAuthenticatedUser = async (req, res, next) => {
+const getAuthenticatedUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { secret } = req.body;
         console.log(secret);
-        const decode = await (0, GenerateJwt_1.verifyJwt)(secret, validate_1.env.JWT_ACCESS_SECRET);
-        if (decode?.id) {
-            const UserId = new mongoose_1.default.Types.ObjectId(decode?.id);
-            const returnUser = (await userModel_1.UserModel.findById(UserId).select("-password"));
+        const decode = yield (0, GenerateJwt_1.verifyJwt)(secret, validate_1.env.JWT_ACCESS_SECRET);
+        if (decode === null || decode === void 0 ? void 0 : decode.id) {
+            const UserId = new mongoose_1.default.Types.ObjectId(decode === null || decode === void 0 ? void 0 : decode.id);
+            const returnUser = (yield userModel_1.UserModel.findById(UserId).select("-password"));
             if (!returnUser) {
                 throw (0, http_errors_1.default)(400, "Error user not found");
             }
@@ -64,18 +73,18 @@ const getAuthenticatedUser = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
+});
 exports.getAuthenticatedUser = getAuthenticatedUser;
-const LoginEmailController = async (req, res, next) => {
+const LoginEmailController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, password } = req.body;
         (0, validate_1.validateLoginWithEmail)({ email, password });
-        const user = await userModel_1.UserModel.findOne({ email });
+        const user = yield userModel_1.UserModel.findOne({ email });
         if (user && user.password) {
-            const match = await bcrypt_1.default.compareSync(password, user?.password);
+            const match = yield bcrypt_1.default.compareSync(password, user === null || user === void 0 ? void 0 : user.password);
             if (match) {
-                const accessToken = await (0, GenerateJwt_1.generateAccessToken)({ id: user?._id });
-                const refreshToken = await (0, GenerateJwt_1.generateRefreshToken)({ id: user?._id });
+                const accessToken = yield (0, GenerateJwt_1.generateAccessToken)({ id: user === null || user === void 0 ? void 0 : user._id });
+                const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
                 res.cookie("jwtRefresh", refreshToken, {
                     httpOnly: true,
                     secure: validate_1.env.ENVIRONMENT === "Production",
@@ -97,14 +106,14 @@ const LoginEmailController = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
+});
 exports.LoginEmailController = LoginEmailController;
-const AfterGoogleLogin = async (req, res, next) => {
+const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         if (req.user) {
             let user = req.user;
-            const accessToken = await (0, GenerateJwt_1.generateAccessToken)({ id: user?._id });
-            const refreshToken = await (0, GenerateJwt_1.generateRefreshToken)({ id: user?._id });
+            const accessToken = yield (0, GenerateJwt_1.generateAccessToken)({ id: user === null || user === void 0 ? void 0 : user._id });
+            const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
             res.cookie("jwtRefresh", refreshToken, {
                 httpOnly: true,
                 secure: validate_1.env.ENVIRONMENT === "Production",
@@ -119,22 +128,22 @@ const AfterGoogleLogin = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
+});
 exports.AfterGoogleLogin = AfterGoogleLogin;
-const refreshTokens = async (req, res, next) => {
+const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cookies = req.cookies;
         const refreshToken = cookies.jwtRefresh;
         if (refreshToken) {
-            const match = await (0, GenerateJwt_1.verifyJwt)(refreshToken, validate_1.env.JWT_REFRESH_SECRET);
+            const match = yield (0, GenerateJwt_1.verifyJwt)(refreshToken, validate_1.env.JWT_REFRESH_SECRET);
             if (match) {
                 const userId = new mongoose_1.default.Types.ObjectId(match.id);
-                const returnUser = await userModel_1.UserModel.findById(userId);
-                const newAccessToken = await (0, GenerateJwt_1.generateAccessToken)({
-                    id: returnUser?._id,
+                const returnUser = yield userModel_1.UserModel.findById(userId);
+                const newAccessToken = yield (0, GenerateJwt_1.generateAccessToken)({
+                    id: returnUser === null || returnUser === void 0 ? void 0 : returnUser._id,
                 });
-                const newRefreshToken = await (0, GenerateJwt_1.generateRefreshToken)({
-                    id: returnUser?._id,
+                const newRefreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({
+                    id: returnUser === null || returnUser === void 0 ? void 0 : returnUser._id,
                 });
                 res
                     .status(200)
@@ -156,16 +165,17 @@ const refreshTokens = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
+});
 exports.refreshTokens = refreshTokens;
-const isUserLoggedIn = async (req, res, next) => {
+const isUserLoggedIn = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const token = req.headers.authorization?.split(" ")[1];
+        const token = (_a = req.headers.authorization) === null || _a === void 0 ? void 0 : _a.split(" ")[1];
         if (token) {
-            const match = await (0, GenerateJwt_1.verifyJwt)(token, validate_1.env.JWT_ACCESS_SECRET);
+            const match = yield (0, GenerateJwt_1.verifyJwt)(token, validate_1.env.JWT_ACCESS_SECRET);
             if (match) {
                 const userId = new mongoose_1.default.Types.ObjectId(match.id);
-                const foundUser = await userModel_1.UserModel.findById(userId);
+                const foundUser = yield userModel_1.UserModel.findById(userId);
                 if (foundUser) {
                     return res.status(200).send({
                         success: true,
@@ -183,9 +193,9 @@ const isUserLoggedIn = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
+});
 exports.isUserLoggedIn = isUserLoggedIn;
-const logoutController = async (req, res, next) => {
+const logoutController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         res.clearCookie("jwtRefresh", {
             httpOnly: true,
@@ -198,5 +208,6 @@ const logoutController = async (req, res, next) => {
     catch (error) {
         next(error);
     }
-};
+});
 exports.logoutController = logoutController;
+//# sourceMappingURL=authControllers.js.map

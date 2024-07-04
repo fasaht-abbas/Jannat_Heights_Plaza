@@ -72,3 +72,4 @@ const bookingSchema = new mongoose_1.Schema({
 }, { timestamps: true });
 const BookingModel = mongoose_1.default.model("booking", bookingSchema);
 exports.BookingModel = BookingModel;
+//# sourceMappingURL=BookingModel.js.map

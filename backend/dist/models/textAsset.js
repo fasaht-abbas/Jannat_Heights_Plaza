@@ -37,3 +37,4 @@ const textSchema = new mongoose_1.Schema({
 }, { timestamps: true });
 const TextModel = mongoose_1.default.model("text", textSchema);
 exports.TextModel = TextModel;
+//# sourceMappingURL=textAsset.js.map

@@ -52,3 +52,4 @@ const appartSchema = new mongoose_1.Schema({
 }, { timestamps: true });
 const ApartModel = mongoose_1.default.model("apart", appartSchema);
 exports.ApartModel = ApartModel;
+//# sourceMappingURL=ApartmentModel.js.map

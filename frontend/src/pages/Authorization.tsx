@@ -24,7 +24,7 @@ const Authorization = () => {
       if (data?.success) {
         dispatch(
           login({
-            token: secret,
+            token: secret as string,
             userData: {
               name: data?.returnUser?.name,
               _id: data?.returnUser?._id,

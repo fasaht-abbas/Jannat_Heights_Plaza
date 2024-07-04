@@ -1,26 +1,20 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "target": "ES6",                          // Specify ECMAScript target version
+    "lib": ["DOM", "DOM.Iterable", "ESNext"], // Specify library files to be included
+    "allowJs": true,                          // Allow JavaScript files to be compiled
+    "skipLibCheck": true,                     // Skip type checking of declaration files
+    "esModuleInterop": true,                  // Enable compatibility between CommonJS and ES modules
+    "allowSyntheticDefaultImports": true,     // Allow default imports from modules with no default export
+    "strict": true,                           // Enable all strict type-checking options
+    "forceConsistentCasingInFileNames": true, // Ensure consistent casing in file names
+    "module": "ESNext",                       // Specify module code generation
+    "moduleResolution": "Node",               // Use Node.js-style module resolution
+    "resolveJsonModule": true,                // Enable importing JSON files as modules
+    "isolatedModules": true,                  // Ensure each file can be safely transpiled without relying on other imports
+    "noEmit": true,                           // Do not emit output files
+    "jsx": "react-jsx"                        // Specify JSX code generation
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src"],                         // Include source files
+  "exclude": ["node_modules"]                 // Exclude node_modules
 }

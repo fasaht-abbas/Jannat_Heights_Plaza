@@ -22,3 +22,4 @@ router.get("/refresh-tokens", authControllers_1.refreshTokens);
 router.get("/protected", authControllers_1.isUserLoggedIn);
 router.post("/logout", authControllers_1.logoutController);
 exports.default = router;
+//# sourceMappingURL=authRoutes.js.map

@@ -1,11 +1,12 @@
 import { RequestHandler } from "express";
 import { User, UserModel } from "../models/userModel";
 import createHttpError from "http-errors";
-import { sendMessage } from "../utils/nodemailer";
+import { sendMessage, transporter } from "../utils/nodemailer";
 import { uploadOnCloudinary } from "../utils/cloudinary";
 import bcrypt from "bcrypt";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import { env } from "../utils/validate";
 
 export const findUser: RequestHandler = async (req, res, next) => {
   try {
@@ -190,6 +191,23 @@ export const UpdateUserRole: RequestHandler = async (req, res, next) => {
     return res.status(200).send({
       success: true,
     });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const ContactUsMail: RequestHandler = async (req, res, next) => {
+  try {
+    const { name, sender, message } = req.body;
+
+    await sendMessage({
+      to: env?.NODEMAILER_GMAIL_USER,
+      subject: `Contact Form Message from ${name} ${sender}`,
+      message: message,
+    });
+    res
+      .status(200)
+      .send({ success: true, message: "Email sent successfully!" });
   } catch (error) {
     next(error);
   }
