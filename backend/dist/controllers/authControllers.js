@@ -86,7 +86,7 @@ const LoginEmailController = (req, res, next) => __awaiter(void 0, void 0, void 
                 const accessToken = yield (0, GenerateJwt_1.generateAccessToken)({ id: user === null || user === void 0 ? void 0 : user._id });
                 const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
                 res.cookie("jwtRefresh", refreshToken, {
-                    httpOnly: true,
+                    httpOnly: validate_1.env.ENVIRONMENT !== "Production",
                     secure: validate_1.env.ENVIRONMENT === "Production",
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 });
@@ -115,7 +115,7 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             const accessToken = yield (0, GenerateJwt_1.generateAccessToken)({ id: user === null || user === void 0 ? void 0 : user._id });
             const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
             res.cookie("jwtRefresh", refreshToken, {
-                httpOnly: true,
+                httpOnly: validate_1.env.ENVIRONMENT !== "Production",
                 secure: validate_1.env.ENVIRONMENT === "Production",
                 expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
             });
@@ -148,7 +148,7 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 res
                     .status(200)
                     .cookie("jwtRefresh", newRefreshToken, {
-                    httpOnly: true,
+                    httpOnly: validate_1.env.ENVIRONMENT !== "Production",
                     secure: validate_1.env.ENVIRONMENT === "Production",
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 })
@@ -198,7 +198,7 @@ exports.isUserLoggedIn = isUserLoggedIn;
 const logoutController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         res.clearCookie("jwtRefresh", {
-            httpOnly: true,
+            httpOnly: validate_1.env.ENVIRONMENT !== "Production",
             secure: validate_1.env.ENVIRONMENT === "Production",
         });
         res.send({

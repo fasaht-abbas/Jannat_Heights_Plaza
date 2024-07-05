@@ -100,7 +100,7 @@ export const LoginEmailController: RequestHandler<
         const accessToken = await generateAccessToken({ id: user?._id });
         const refreshToken = await generateRefreshToken({ id: user?._id });
         res.cookie("jwtRefresh", refreshToken, {
-          httpOnly: true,
+          httpOnly: env.ENVIRONMENT !== "Production",
           secure: env.ENVIRONMENT === "Production",
           expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         });
@@ -126,7 +126,7 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
       const accessToken = await generateAccessToken({ id: user?._id });
       const refreshToken = await generateRefreshToken({ id: user?._id });
       res.cookie("jwtRefresh", refreshToken, {
-        httpOnly: true,
+        httpOnly: env.ENVIRONMENT !== "Production",
         secure: env.ENVIRONMENT === "Production",
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
       });
@@ -159,7 +159,7 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
         res
           .status(200)
           .cookie("jwtRefresh", newRefreshToken, {
-            httpOnly: true,
+            httpOnly: env.ENVIRONMENT !== "Production",
             secure: env.ENVIRONMENT === "Production",
             expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
           })
@@ -205,7 +205,7 @@ export const isUserLoggedIn: RequestHandler = async (req, res, next) => {
 export const logoutController: RequestHandler = async (req, res, next) => {
   try {
     res.clearCookie("jwtRefresh", {
-      httpOnly: true,
+      httpOnly: env.ENVIRONMENT !== "Production",
       secure: env.ENVIRONMENT === "Production",
     });
     res.send({
