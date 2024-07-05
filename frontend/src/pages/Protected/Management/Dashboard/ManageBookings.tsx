@@ -458,7 +458,7 @@ const ManageBookings = () => {
                         Apartment: {booking.apartment?.no}
                       </p>
                       <p className="text-primary">
-                        Rent: {booking.apartment.rent}
+                        Rent: {booking.payment_amount}
                       </p>
                       <p className="text-primary">
                         Start Date: {new Date(booking.from).toDateString()}
@@ -491,26 +491,27 @@ const ManageBookings = () => {
             </div>
           </div>
           {editModal && (
-            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-              <div className="bg-white rounded-lg p-6 w-full max-w-md">
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-auto">
+              <div className="bg-white rounded-lg p-6 w-full max-w-md mx-auto my-4 shadow-lg">
                 <div className="flex justify-end">
                   <button
                     onClick={() => setEditModal(null)}
-                    className="text-black"
+                    className="text-gray-600 hover:text-gray-900 transition duration-150"
                   >
                     Close
                   </button>
                 </div>
-                <SubHeadingText text="Edit Booking" className="text-center" />
-                <div className="flex flex-col gap-4 mt-4">
+                <SubHeadingText
+                  text="Edit Booking"
+                  className="text-center text-xl font-semibold mb-4"
+                />
+                <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-2">
                     <SubHeadingText text="Payment Status" />
                     <select
                       value={paymentStatus}
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setPaymentStatus(e.target.value)
-                      }
-                      className="w-full border border-primary p-3 rounded-lg text-primary font-bold"
+                      onChange={(e) => setPaymentStatus(e.target.value)}
+                      className="w-full border border-gray-300 p-3 rounded-lg text-gray-700 font-medium"
                     >
                       <option value="">Select Payment Status</option>
                       <option value="true">Cleared</option>
@@ -521,45 +522,57 @@ const ManageBookings = () => {
                     <SubHeadingText text="Booking Status" />
                     <select
                       value={editStatus}
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
-                        setEditStatus(e.target.value)
-                      }
-                      className="w-full border border-primary p-3 rounded-lg text-primary font-bold"
+                      onChange={(e) => setEditStatus(e.target.value)}
+                      className="w-full border border-gray-300 p-3 rounded-lg text-gray-700 font-medium"
                     >
                       <option value="">Select Booking Status</option>
-
                       <option value="Processing">Processing</option>
                       <option value="Confirmed">Confirmed</option>
                       <option value="Expired">Expired</option>
                       <option value="Cancelled">Cancelled</option>
                     </select>
                   </div>
-                  {/* Processing", "Confirmed", "Expired", "Canceled" */}
-                  {editModal?.payment_receipt ? (
-                    <img
-                      className="w-40"
-                      src={editModal?.payment_receipt}
-                      alt="receipt"
-                    />
-                  ) : (
-                    <InputField
-                      label="Upload Receipt"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                        setReceipt(e.target.files ? e.target.files[0] : null)
-                      }
-                    />
-                  )}
+                  <div className="flex flex-col gap-2">
+                    <SubHeadingText text="Payment Receipt" />
+                    {editModal?.payment_receipt ? (
+                      <>
+                        <img
+                          className="w-40 mb-2"
+                          src={editModal?.payment_receipt}
+                          alt="receipt"
+                        />
+                        <InputField
+                          label="Update Receipt"
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) =>
+                            setReceipt(
+                              e.target.files ? e.target.files[0] : null
+                            )
+                          }
+                          className="mt-2"
+                        />
+                      </>
+                    ) : (
+                      <InputField
+                        label="Upload Receipt"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) =>
+                          setReceipt(e.target.files ? e.target.files[0] : null)
+                        }
+                      />
+                    )}
+                  </div>
                   <Button
                     variant="primary"
                     onClick={handleUpdate}
-                    className="text-white"
+                    className="text-white bg-blue-500 hover:bg-blue-600 transition duration-150 rounded-lg p-3"
                   >
                     Update Booking
                   </Button>
                   <Button
-                    className="text-danger border-primary border-2"
+                    className="text-red-500 border border-red-500 hover:bg-red-500 hover:text-white transition duration-150 rounded-lg p-3"
                     onClick={DeleteBooking}
                   >
                     Delete
