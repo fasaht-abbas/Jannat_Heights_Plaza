@@ -36,10 +36,11 @@ const passport_1 = __importDefault(require("passport"));
 const apartRoutes_1 = __importDefault(require("./routes/apartRoutes"));
 require("./utils/passport");
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
+const validate_1 = require("./utils/validate");
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use("*", (0, cors_1.default)({
-    origin: true,
+    origin: validate_1.env.FRONTEND_URL,
     credentials: true,
 }));
 app.use((0, morgan_1.default)("dev"));
