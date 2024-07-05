@@ -17,20 +17,18 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ScrollToTop>
-        <GoogleOAuthProvider clientId={env.REACT_APP_GOOGLE_CLIENT_ID}>
-          <Provider store={store}>
-            <PersistGate loading={null} persistor={persistor}>
-              <App />
-              <Toaster />
-            </PersistGate>
-          </Provider>
-        </GoogleOAuthProvider>
-      </ScrollToTop>
-    </BrowserRouter>
-  </React.StrictMode>
+  <BrowserRouter>
+    <ScrollToTop>
+      <GoogleOAuthProvider clientId={env.REACT_APP_GOOGLE_CLIENT_ID}>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <App />
+            <Toaster />
+          </PersistGate>
+        </Provider>
+      </GoogleOAuthProvider>
+    </ScrollToTop>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -15,8 +15,6 @@ const Authorization = () => {
 
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
-  const name = queryParams.get("name");
-  const email = queryParams.get("email");
   const secret = queryParams.get("secret");
 
   const getUser = async () => {
