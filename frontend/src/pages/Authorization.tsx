@@ -1,26 +1,30 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { appDispatch } from "../redux/store";
 import { api, handleError } from "../utils/axios";
 import { login } from "../redux/authSlice";
 import Loading from "../components/reuseables/Loading";
+import { useLocation } from "react-router-dom";
+
 const Authorization = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
   const [authorized, setAuthorized] = useState(false);
   const dispatch: appDispatch = useDispatch();
-  const [searchParams] = useSearchParams();
-  const secret = searchParams.get("secret");
 
-  // now we  need to use the library called react persist to persist the state of the redux
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const name = queryParams.get("name");
+  const email = queryParams.get("email");
+  const secret = queryParams.get("secret");
 
   const getUser = async () => {
+    console.log("Fetching user with secret:", secret); // Add this line for logging
+    setLoading(true);
     try {
-      const { data } = await api.post("/api/v1/auth/get-user", {
-        secret,
-      });
-      // jsut make sure that any change also needs to be made in the app.tsx page and
+      const { data } = await api.post("/api/v1/auth/get-user", { secret });
+
       if (data?.success) {
         dispatch(
           login({
@@ -45,13 +49,13 @@ const Authorization = () => {
           navigate("/", { replace: true });
         }
         setAuthorized(true);
-        setLoading(false);
       }
     } catch (error) {
       handleError(error);
       setAuthorized(false);
-      setLoading(false);
       navigate("/login");
+    } finally {
+      setLoading(false);
     }
   };
 
