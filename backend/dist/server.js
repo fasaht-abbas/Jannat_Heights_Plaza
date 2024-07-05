@@ -22,7 +22,7 @@ app_1.default.use(express_1.default.static(path_1.default.join(__dirname, "build
         }
     },
 }));
-app_1.default.get("*", (req, res) => {
+app_1.default.get("/*", (req, res) => {
     res.sendFile(path_1.default.join(__dirname, "build", "index.html"));
 });
 // Setting up REST
