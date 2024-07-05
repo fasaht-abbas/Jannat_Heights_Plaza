@@ -8,13 +8,14 @@ import passport from "passport";
 import apartRoutes from "./routes/apartRoutes";
 import "./utils/passport";
 import cookieParser from "cookie-parser";
+import { env } from "./utils/validate";
 
 const app = express();
 app.use(express.json());
 app.use(
   "*",
   cors({
-    origin: true,
+    origin: env.FRONTEND_URL,
     credentials: true,
   })
 );
