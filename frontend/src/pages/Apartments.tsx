@@ -260,8 +260,8 @@ const Apartments = () => {
               <thead>
                 <tr className="bg-primary text-white">
                   <th className="p-2 border border-accent">Sr#</th>
-                  <th className="p-2 border border-accent">Name</th>
-                  <th className="p-2 border border-accent">Rent</th>
+                  <th className="p-2 border border-accent">Apart #</th>
+                  <th className="p-2 border border-accent">Rent (PKR)</th>
                   <th className="p-2 border border-accent">Floor</th>
                   <th className="p-2 border border-accent">Book Now</th>
                 </tr>

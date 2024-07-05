@@ -5,6 +5,7 @@ import { RootState } from "../redux/store";
 import { Outlet } from "react-router-dom";
 import Loading from "../components/reuseables/Loading";
 import UnAuthorizedPage from "../components/reuseables/UnAuthorizedPage";
+import toast from "react-hot-toast";
 const Private = () => {
   const [loading, setLoading] = useState(false);
   const [authorized, setAuthorized] = useState(false);
