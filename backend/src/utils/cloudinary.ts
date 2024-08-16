@@ -24,5 +24,4 @@ const uploadOnCloudinary = async (localFilePath: string) => {
   }
 };
 
-// hum agar chahin to we can simply make a model for the video aur isk sath sath ye bhi ho sakta hai k hum kisi tarikay se process.env me email bhi de dain aur phir uska link de dai third ye k me sab se pehlay admin hi banata hu aur usay hi sari access deta hu aur agay wal kaam baad me
 export { uploadOnCloudinary };

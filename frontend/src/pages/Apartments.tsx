@@ -22,6 +22,7 @@ import { useNavigate } from "react-router-dom";
 import LoginNowModel from "../components/reuseables/LoginNowModel";
 import RevealBottom from "../components/Animations/RevealBottom";
 import toast from "react-hot-toast";
+import { Helmet } from "react-helmet";
 
 const Apartments = () => {
   const userData = useSelector((state: RootState) => state.auth.userData);
@@ -149,8 +150,124 @@ const Apartments = () => {
     getAssets();
   }, []);
 
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ApartmentComplex",
+    name: "Jannat Heights",
+    description:
+      "Fully furnished apartments with modern amenities in Bahria Town Lahore.",
+    image: "https://www.jannatheights.com/images/jannat-heights-apartments.jpg",
+    url: "https://www.jannatheights.com/apartments/furnished-rentals-bahria-town-lahore",
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "123 Bahria Town",
+      addressLocality: "Lahore",
+      addressRegion: "Punjab",
+      postalCode: "54000",
+      addressCountry: "PK",
+    },
+    offers: {
+      "@type": "Offer",
+      url: "https://www.jannatheights.com/apartments/furnished-rentals-bahria-town-lahore",
+      priceCurrency: "PKR",
+      price: "50000",
+      availability: "https://schema.org/InStock",
+      validFrom: "2024-08-15",
+    },
+    numberOfRooms: 6,
+    petsAllowed: true,
+    amenityFeature: [
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Air Conditioning",
+        value: true,
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Furnished",
+        value: true,
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Equipped Kitchen",
+        value: true,
+      },
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "High-Speed Internet",
+        value: true,
+      },
+    ],
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.5",
+      reviewCount: "150",
+    },
+    review: [
+      {
+        "@type": "Review",
+        author: {
+          "@type": "Person",
+          name: "John Doe",
+        },
+        datePublished: "2024-08-01",
+        reviewRating: {
+          "@type": "Rating",
+          ratingValue: "5",
+        },
+        reviewBody:
+          "Amazing experience! The apartments are well-maintained and fully furnished. Highly recommend Jannat Heights for anyone looking for a comfortable stay in Bahria Town Lahore.",
+      },
+    ],
+  };
+
   return (
-    <LayoutWrapper>
+    <LayoutWrapper
+      title="Luxury Furnished Apartments in Bahria Town Lahore | Jannat Heights"
+      description="Discover luxury living at Jannat Heights in Bahria Town Lahore. Fully furnished apartments with equipped kitchens and air-conditioned rooms. Book your stay today!"
+      keywords="Furnished apartments in Bahria Town Lahore, Luxury rentals in Lahore, Jannat Heights, Furnished rental plaza Lahore, Book apartments in Bahria Town"
+      author="Jannat Heights - Bahria Town Lahore"
+      robots="index,follow"
+    >
+      <Helmet>
+        <meta
+          property="og:title"
+          content="Luxury Furnished Apartments in Bahria Town Lahore | Jannat Heights"
+        />
+        <meta
+          property="og:description"
+          content="Experience the best of luxury living in Bahria Town Lahore at Jannat Heights. Our fully furnished apartments offer top-tier amenities for your comfort."
+        />
+        <meta
+          property="og:image"
+          content="https://www.jannatheights.com/images/jannat-heights-apartments.jpg"
+        />
+        <meta
+          property="og:url"
+          content="https://www.jannatheights.com/apartments/furnished-rentals-bahria-town-lahore"
+        />
+        <meta property="og:type" content="website" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Luxury Furnished Apartments in Bahria Town Lahore | Jannat Heights"
+        />
+        <meta
+          name="twitter:description"
+          content="Find the perfect furnished apartment in Bahria Town Lahore at Jannat Heights. Fully equipped kitchens, air-conditioned rooms, and more."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.jannatheights.com/images/jannat-heights-apartments.jpg"
+        />
+        <link
+          rel="canonical"
+          href="https://www.jannatheights.com/apartments/furnished-rentals-bahria-town-lahore"
+        />
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
       <div className="w-full text-center py-4">
         <HeadingText text="Studio Apartment" />
       </div>

@@ -138,6 +138,7 @@ const MyBookings = () => {
                         text={booking?.status}
                       />
                     </div>
+
                     <div className="flex flex-col md:flex-row gap-2 md:gap-4">
                       <SubHeadingText
                         className="font-semibold text-primary"
@@ -146,6 +147,18 @@ const MyBookings = () => {
                       <SubHeadingText
                         className="font-medium"
                         text={new Date(booking?.booking_time).toLocaleString()}
+                      />
+                    </div>
+                  </div>
+                  <div className="flex flex-col md:flex-row justify-between gap-4">
+                    <div className="flex flex-col md:flex-row gap-2 md:gap-4">
+                      <SubHeadingText
+                        className="font-semibold text-primary"
+                        text="Total Amount (Rs): "
+                      />
+                      <SubHeadingText
+                        className="font-medium"
+                        text={String(booking?.payment_amount)}
                       />
                     </div>
                   </div>

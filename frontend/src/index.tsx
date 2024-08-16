@@ -5,8 +5,6 @@ import App from "./App";
 import { BrowserRouter } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store, persistor } from "./redux/store";
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { env } from "./utils/validate";
 import { PersistGate } from "redux-persist/integration/react";
 import { Toaster } from "react-hot-toast";
 import ScrollToTop from "./utils/ScrollToTop";
@@ -19,14 +17,12 @@ const root = ReactDOM.createRoot(
 root.render(
   <BrowserRouter>
     <ScrollToTop>
-      <GoogleOAuthProvider clientId={env.REACT_APP_GOOGLE_CLIENT_ID}>
-        <Provider store={store}>
-          <PersistGate loading={null} persistor={persistor}>
-            <App />
-            <Toaster />
-          </PersistGate>
-        </Provider>
-      </GoogleOAuthProvider>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <App />
+          <Toaster />
+        </PersistGate>
+      </Provider>
     </ScrollToTop>
   </BrowserRouter>
 );

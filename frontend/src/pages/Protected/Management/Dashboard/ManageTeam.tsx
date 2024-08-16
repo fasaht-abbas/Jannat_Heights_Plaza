@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import DashWrapper from "./DashWrapper";
-import { api, handleError } from "../../../../utils/axios";
+import { api, handleError, protectedApi } from "../../../../utils/axios";
 import { UserDTO } from "../../../../components/interface";
 import toast from "react-hot-toast";
 
@@ -8,7 +8,10 @@ const ManageTeam = () => {
   const [users, setUsers] = useState<UserDTO[]>([]);
   const [viewedUser, setViewedUser] = useState<UserDTO | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [selectedRole, setSelectedRole] = useState("");
+  const [selectedRole, setSelectedRole] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchResults, setSearchResults] = useState<UserDTO[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const getAllMembers = async () => {
     try {
@@ -23,20 +26,46 @@ const ManageTeam = () => {
 
   const updatingUserRole = async () => {
     try {
-      const { data } = await api.put(
-        `/api/v1/user/update-user-role/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  :${viewedUser?._id}`,
+      if (!viewedUser?._id || !selectedRole) {
+        return toast.error("Role and user are required");
+      }
+      const { data } = await protectedApi.put(
+        `/api/v1/user/update-user-role/${viewedUser?._id}`,
         {
           role: selectedRole,
         }
       );
       if (data?.success) {
-        toast.success("Updated SuccessFully");
+        toast.success("Updated Successfully");
+        getAllMembers();
         setViewedUser(null);
+        setIsDialogOpen(false);
       }
     } catch (error) {
       handleError(error);
     }
   };
+
+  const handleSearch = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    if (value.trim() === "") {
+      setSearchResults([]);
+      return;
+    }
+    setLoading(true);
+    try {
+      const { data } = await api.get(`/api/v1/user/search/${value}`);
+      setSearchResults(data?.result);
+    } catch (error) {
+      handleError(error);
+      console.error("Error searching users:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     getAllMembers();
   }, []);
@@ -44,12 +73,10 @@ const ManageTeam = () => {
   const adminAndManagerUsers = users.filter(
     (user) => user.role === "admin" || user.role === "manager"
   );
-  const otherUsers = users.filter(
-    (user) => user.role !== "admin" && user.role !== "manager"
-  );
 
   const handleViewDetails = (user: UserDTO) => {
     setViewedUser(user);
+    setSelectedRole(user.role); // Set the current role of the user as the selected role
     setIsDialogOpen(true);
   };
 
@@ -63,6 +90,50 @@ const ManageTeam = () => {
         <p className="text-4xl font-heading font-bold mb-8 text-center">
           Manage Team
         </p>
+
+        {/* Search Bar */}
+        <div className="w-full max-w-4xl mb-8">
+          <input
+            type="text"
+            className="w-full py-2 px-4 border border-gray-300 rounded-lg"
+            placeholder="Search by email"
+            value={searchTerm}
+            onChange={handleSearch}
+          />
+        </div>
+
+        {/* Search Results */}
+        {searchTerm && (
+          <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8">
+            <p className="text-2xl font-semibold mb-4 text-center">
+              Search Results
+            </p>
+            {loading ? (
+              <p>Loading...</p>
+            ) : searchResults.length > 0 ? (
+              searchResults.map((user, index) => (
+                <div
+                  key={index}
+                  className="grid grid-cols-1 lg:grid-cols-4 gap-4 py-2 border-b last:border-none items-center"
+                >
+                  <p className="text-gray-700 hidden lg:block">{user?.name}</p>
+                  <p className="text-gray-700">{user?.email}</p>
+                  <p className="text-gray-700 hidden lg:block">{user?.role}</p>
+                  <div className="flex justify-center lg:justify-start gap-2">
+                    <button
+                      className="bg-green-500 text-primary py-1 px-3 rounded hover:bg-green-600"
+                      onClick={() => handleViewDetails(user)}
+                    >
+                      View
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>No users found.</p>
+            )}
+          </div>
+        )}
 
         {/* Admin and Manager Users Section */}
         <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6 mb-8">
@@ -81,7 +152,9 @@ const ManageTeam = () => {
               className="grid grid-cols-1 lg:grid-cols-4 gap-4 py-2 border-b last:border-none items-center"
             >
               <p className="text-gray-700 hidden lg:block">{user?.name}</p>
-              <p className="text-gray-700">{user?.email}</p>
+              <p className="text-gray-700 p-4  whitespace-normal break-words ">
+                {user?.email}
+              </p>
               <p className="text-gray-700 hidden lg:block">{user?.role}</p>
               <div className="flex justify-center lg:justify-start gap-2">
                 <button
@@ -97,35 +170,6 @@ const ManageTeam = () => {
 
         <hr className="w-full max-w-4xl border-gray-300 mb-8" />
 
-        {/* All Other Users Section */}
-        <div className="w-full max-w-4xl bg-white shadow-lg rounded-lg p-6">
-          <p className="text-2xl font-semibold mb-4 text-center">All Users</p>
-          <div className="hidden lg:grid grid-cols-4 gap-4 border-b-2 pb-2 mb-4">
-            <p className="font-semibold text-lg">Name</p>
-            <p className="font-semibold text-lg">Email</p>
-            <p className="font-semibold text-lg">Role</p>
-            <p className="font-semibold text-lg text-center">Actions</p>
-          </div>
-          {otherUsers.map((user, index) => (
-            <div
-              key={index}
-              className="grid grid-cols-1 lg:grid-cols-4 gap-4 py-2 border-b last:border-none items-center"
-            >
-              <p className="text-gray-700 hidden lg:block">{user?.name}</p>
-              <p className="text-gray-700">{user?.email}</p>
-              <p className="text-gray-700 hidden lg:block">{user?.role}</p>
-              <div className="flex justify-center lg:justify-start gap-2">
-                <button
-                  className="bg-green-500 text-primary py-1 px-3 rounded hover:bg-green-600"
-                  onClick={() => handleViewDetails(user)}
-                >
-                  View
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Dialog for Viewing and Editing User Details */}
         {viewedUser && (
           <div
@@ -140,32 +184,35 @@ const ManageTeam = () => {
               </p>
               <p>Name: {viewedUser.name}</p>
               <p>Email: {viewedUser.email}</p>
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700">
-                  Select Role:
-                </label>
+              <p>Current Role: {viewedUser.role}</p>
+
+              {/* Role Selection */}
+              <div className="mt-4">
+                <p className="text-lg font-semibold mb-2">Change Role</p>
                 <select
-                  className="mt-1 block w-full py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-primary focus:border-primary sm:text-sm"
                   value={selectedRole}
                   onChange={(e) => setSelectedRole(e.target.value)}
+                  className="w-full p-2 border border-gray-300 rounded-lg"
                 >
                   <option value="admin">Admin</option>
                   <option value="manager">Manager</option>
                   <option value="customer">Customer</option>
                 </select>
               </div>
-              <div className="flex justify-end mt-4">
+
+              {/* Buttons */}
+              <div className="flex justify-end mt-6 gap-2">
                 <button
-                  className="bg-blue-500 text-primary py-1 px-3 rounded hover:bg-blue-600"
+                  className="bg-gray-500 text-primary py-2 px-4 rounded hover:bg-gray-600"
                   onClick={handleCloseDialog}
                 >
-                  Close
+                  Cancel
                 </button>
                 <button
-                  className="bg-green-500 text-primary py-1 px-3 rounded hover:bg-green-600 ml-2"
+                  className="bg-green-500 text-primary py-2 px-4 rounded hover:bg-green-600"
                   onClick={updatingUserRole}
                 >
-                  Edit Role
+                  Update
                 </button>
               </div>
             </div>

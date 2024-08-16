@@ -18,8 +18,6 @@ router.post("/register-email", registerWithEmail);
 
 router.post("/get-user", getAuthenticatedUser);
 
-router.post("/login-email");
-
 router.get("/google", passport.authenticate("google", { session: false }));
 
 router.get(

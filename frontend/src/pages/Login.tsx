@@ -83,7 +83,13 @@ const Login = () => {
     emailref?.current?.focus();
   }, []);
   return (
-    <LayoutWrapper>
+    <LayoutWrapper
+      title="Login - Jannat Heights - Secure Access to Your Account"
+      description="Log in to your Jannat Heights account to manage your bookings, view your rental details, and access exclusive member services. Secure and private access for all residents and guests."
+      keywords="Jannat Heights login, account access, secure login, manage bookings, resident login, guest login, Bahria Town Lahore rentals"
+      robots="noindex, nofollow"
+      author="Jannat Heights - Bahria Town Lahore"
+    >
       {loading ? (
         <Loading />
       ) : (

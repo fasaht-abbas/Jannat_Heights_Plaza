@@ -6,6 +6,7 @@ import LayoutWrapper from "../components/wrapper/LayoutWrapper";
 import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { HeadingText } from "../components/reuseables/CustomTypographies";
 import { api, handleError } from "../utils/axios";
+import { Helmet } from "react-helmet";
 
 interface IFormInputs {
   name: string;
@@ -41,8 +42,70 @@ const ContactUs: React.FC = () => {
     }
   };
 
+  // structured data for the seo
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    name: "Contact Jannat Heights",
+    description:
+      "Get in touch with Jannat Heights for inquiries, bookings, or support. We provide contact information and support options for our luxury apartments in Bahria Town Lahore.",
+    contactPoint: {
+      "@type": "ContactPoint",
+      contactType: "customer service",
+      telephone: "+923001508712",
+      email: "info@jannatheights.com",
+      availableLanguage: "English",
+    },
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Commercial # 13 , Shershah Block",
+      addressLocality: "Bahria Town",
+      addressRegion: "Lahore",
+      postalCode: "53720",
+      addressCountry: "PK",
+    },
+  };
+
   return (
-    <LayoutWrapper>
+    <LayoutWrapper
+      title="Contact Us - Jannat Heights"
+      description="Get in touch with Jannat Heights for inquiries, bookings, or support. We provide contact information and support options for our luxury apartments in Bahria Town Lahore."
+      keywords="Contact Jannat Heights, contact information, luxury apartments Bahria Town, customer service, support, inquiries, Jannat Heights contact"
+      author="Jannat Heights - Bahria Town Lahore"
+      robots="index, follow"
+    >
+      <Helmet>
+        {/* Open Graph Tags for Social Media Sharing */}
+        <meta property="og:title" content="Contact Us - Jannat Heights" />
+        <meta
+          property="og:description"
+          content="Get in touch with Jannat Heights for inquiries, bookings, or support. We provide contact information and support options for our luxury apartments in Bahria Town Lahore."
+        />
+        <meta property="og:image" content="URL_TO_YOUR_CONTACT_PAGE_IMAGE" />
+        <meta
+          property="og:url"
+          content="https://www.jannatheights.com/contact"
+        />
+        <meta property="og:type" content="website" />
+
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content="Contact Us - Jannat Heights" />
+        <meta
+          name="twitter:description"
+          content="Get in touch with Jannat Heights for inquiries, bookings, or support. We provide contact information and support options for our luxury apartments in Bahria Town Lahore."
+        />
+        <meta name="twitter:image" content="URL_TO_YOUR_CONTACT_PAGE_IMAGE" />
+        <meta
+          name="twitter:url"
+          content="https://www.jannatheights.com/contact"
+        />
+
+        {/* Structured Data */}
+        <script type="application/ld+json">
+          {JSON.stringify(structuredData)}
+        </script>
+      </Helmet>
       <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
         <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
           <HeadingText className="w-full text-center" text="Contact Us" />

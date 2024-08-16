@@ -18,6 +18,8 @@ import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 import RevealBottom from "../../../../components/Animations/RevealBottom";
 import Loading from "../../../../components/reuseables/Loading";
+import { io } from "socket.io-client";
+import { env } from "../../../../utils/validate";
 
 const ManageBookings = () => {
   const [bookings, setBookings] = useState<BookingDTO[]>();
@@ -63,22 +65,56 @@ const ManageBookings = () => {
     }
   };
 
-  const calculateDetails = () => {
+  const calculateDetails = async () => {
     if (!apartId) {
       toast.error("Select an apartment");
-    } else {
-      getSlectedApart();
-      setSeeAvailable(true);
-      if (dates[0]?.startDate && dates[0]?.endDate) {
-        const date1 = new Date(dates[0]?.startDate).getTime();
-        const date2 = new Date(dates[0]?.endDate).getTime();
-        const time = Math.abs(date2 - date1);
-        const days = Math.ceil(time / (1000 * 60 * 60 * 24));
-
-        setTotalDays(days);
-        setAmount(days * Number(selectedApart?.rent));
-      }
+      return;
     }
+
+    // Fetch the selected apartment details
+    await getSlectedApart();
+
+    // Wait until the apartment data is available
+    let attempts = 0;
+    while (!selectedApart?.rent && attempts < 5) {
+      // Check if the apartment's rent is defined
+      await new Promise((resolve) => setTimeout(resolve, 200)); // Wait for 200ms
+      attempts++;
+    }
+
+    if (!selectedApart?.rent) {
+      toast.error("Unable to retrieve apartment rent. Please try again.");
+      return;
+    }
+
+    setSeeAvailable(true);
+
+    if (dates[0]?.startDate && dates[0]?.endDate) {
+      const date1 = new Date(dates[0]?.startDate).getTime();
+      const date2 = new Date(dates[0]?.endDate).getTime();
+      const time = Math.abs(date2 - date1);
+      const days = Math.ceil(time / (1000 * 60 * 60 * 24));
+      const rent = selectedApart.rent;
+
+      setTotalDays(days);
+      setAmount(days * rent);
+    }
+  };
+
+  const validateForm = () => {
+    if (
+      !name ||
+      !cnic ||
+      !phone ||
+      !address ||
+      !apartId ||
+      !pmeathod ||
+      !dates[0]?.startDate ||
+      !dates[0]?.endDate
+    ) {
+      return false;
+    }
+    return true;
   };
 
   const fetchAparts = async () => {
@@ -131,17 +167,23 @@ const ManageBookings = () => {
         fetchAllBookings();
         setPaymentStatus("");
         setEditStatus("");
+      } else {
+        setLoading(false);
       }
     } catch (error) {
-      setLoading(false);
       handleError(error);
+      setLoading(false);
     }
   };
 
   const makeNewAdminBooking = async () => {
+    if (!validateForm()) {
+      setLoading(false);
+      toast.error("All fields except Email are required.");
+      return;
+    }
+    setLoading(false);
     try {
-      setLoading(true);
-
       const { data } = await protectedApi.post(
         "/api/v1/apart/add-new-apart-booking",
         {
@@ -160,16 +202,27 @@ const ManageBookings = () => {
         }
       );
       if (data?.success) {
-        fetchAllBookings();
         setLoading(false);
+        setOpenMakeBooking(false);
+        setSeeAvailable(false);
+        setDates([
+          {
+            startDate: new Date(),
+            endDate: new Date(),
+            key: "selection",
+          },
+        ]);
         toast.success("Booking Made");
+        fetchAllBookings();
         setName("");
+        setAmount(0);
         setPhone("");
         setPassword("");
         setEmail("");
         setCnic("");
       }
     } catch (error) {
+      setLoading(false);
       handleError(error);
     }
   };
@@ -192,6 +245,20 @@ const ManageBookings = () => {
   useEffect(() => {
     fetchAllBookings();
     fetchAparts();
+  }, []);
+
+  const socket = io(env.REACT_APP_API_BASE_URL);
+
+  useEffect(() => {
+    // Listen for booking notifications
+    socket.on("newBooking", (bookingData) => {
+      console.log("New booking received:", bookingData);
+      // Display notification logic here
+    });
+
+    return () => {
+      socket.off("newBooking");
+    };
   }, []);
 
   return (
@@ -440,34 +507,43 @@ const ManageBookings = () => {
                   >
                     <div>
                       <p className="font-bold text-primary">
-                        Customer: {booking.customer.name}
+                        <span className="font-bold">Customer:</span>{" "}
+                        {booking.customer.name}
                       </p>
                       <p className="text-primary">
-                        CNIC: {booking.customer.CNIC}
+                        <span className="font-bold">CNIC:</span>{" "}
+                        {booking.customer.CNIC}
                       </p>
                       <p className="text-primary">
-                        Phone: {booking.customer.phone}
+                        <span className="font-bold">Phone:</span>{" "}
+                        {booking.customer.phone}
                       </p>
-                      <p className=" text-center text-primary p-4 max-w-xs whitespace-normal break-words">
-                        Address: {booking.customer.address}
-                      </p>
-                      <p className="text-primary">
-                        Email: {booking.customer.email}
-                      </p>
-                      <p className="text-primary">
-                        Apartment: {booking.apartment?.no}
+                      <p className="text-primary text-center p-4 max-w-xs whitespace-normal break-words">
+                        <span className="font-bold">Address:</span>{" "}
+                        {booking.customer.address}
                       </p>
                       <p className="text-primary">
-                        Rent: {booking.payment_amount}
+                        <span className="font-bold">Email:</span>{" "}
+                        {booking.customer.email}
                       </p>
                       <p className="text-primary">
-                        Start Date: {new Date(booking.from).toDateString()}
+                        <span className="font-bold">Apartment:</span>{" "}
+                        {booking.apartment?.no}
                       </p>
                       <p className="text-primary">
-                        End Date: {new Date(booking.to).toDateString()}
+                        <span className="font-bold">Rent:</span>{" "}
+                        {booking.payment_amount as number}
                       </p>
                       <p className="text-primary">
-                        Booking Date:{" "}
+                        <span className="font-bold">Start Date:</span>{" "}
+                        {new Date(booking.from).toDateString()}
+                      </p>
+                      <p className="text-primary">
+                        <span className="font-bold">End Date:</span>{" "}
+                        {new Date(booking.to).toDateString()}
+                      </p>
+                      <p className="text-primary">
+                        <span className="font-bold">Booking Date:</span>{" "}
                         {new Date(booking.booking_time).toLocaleString()}
                       </p>
                     </div>
@@ -492,7 +568,7 @@ const ManageBookings = () => {
           </div>
           {editModal && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-auto">
-              <div className="bg-white rounded-lg p-6 w-full max-w-md mx-auto my-4 shadow-lg">
+              <div className="bg-white rounded-lg p-6 w-full max-w-md mx-auto shadow-lg overflow-y-auto h-[80vh]">
                 <div className="flex justify-end">
                   <button
                     onClick={() => setEditModal(null)}

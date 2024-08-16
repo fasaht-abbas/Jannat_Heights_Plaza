@@ -42,16 +42,23 @@ const Header = () => {
         <li className={`${open ? "sm:block" : "hidden md:block"}`}>
           <Navicon label="Apartment" to="/apartments" />
         </li>
-        <li className={`${open ? "sm:block" : "hidden md:block"}`}>
-          <Navicon
-            label="Bookings"
-            to={
-              userData?.role === "customer"
-                ? "/private/bookings"
-                : "/private/r2/bookings"
-            }
-          />
-        </li>
+        {userData ? (
+          <li className={`${open ? "sm:block" : "hidden md:block"}`}>
+            <Navicon
+              label="Bookings"
+              to={
+                userData?.role === "customer"
+                  ? "/private/bookings"
+                  : "/private/r2/bookings"
+              }
+            />
+          </li>
+        ) : (
+          <li className={`${open ? "sm:block" : "hidden md:block"}`}>
+            <Navicon label="Help" to="/help" />
+          </li>
+        )}
+
         <li className=" absolute left-5 top-0 md:static sm:block">
           <Logo className="cursor-pointer" link={true} />
         </li>

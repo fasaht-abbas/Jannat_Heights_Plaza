@@ -53,6 +53,7 @@ export const sendOTP: RequestHandler = async (req, res, next) => {
     }
 
     const options = {
+      from: "Jannat Heights Plaza <jannatheights@gmail.com>",
       to: email,
       subject: "OTP to verify your email account",
       message:
@@ -184,6 +185,10 @@ export const UpdateUserRole: RequestHandler = async (req, res, next) => {
     if (!uid) {
       throw createHttpError(404, "Could not find userId");
     }
+
+    if (!role) {
+      throw createHttpError(404, "Could not find role");
+    }
     const id = new mongoose.Types.ObjectId(uid);
     await UserModel.findByIdAndUpdate(id, {
       role: role,
@@ -201,6 +206,7 @@ export const ContactUsMail: RequestHandler = async (req, res, next) => {
     const { name, sender, message } = req.body;
 
     await sendMessage({
+      from: env?.NODEMAILER_GMAIL_USER,
       to: env?.NODEMAILER_GMAIL_USER,
       subject: `Contact Form Message from ${name} ${sender}`,
       message: message,
@@ -209,6 +215,28 @@ export const ContactUsMail: RequestHandler = async (req, res, next) => {
       .status(200)
       .send({ success: true, message: "Email sent successfully!" });
   } catch (error) {
+    next(error);
+  }
+};
+
+export const search: RequestHandler = async (req, res, next) => {
+  try {
+    const { query } = req.params;
+
+    if (!query) {
+      throw createHttpError(400, "Query is required");
+    }
+
+    const result = await UserModel.find({
+      $or: [{ email: { $regex: query, $options: "i" } }],
+    });
+
+    res.status(200).send({
+      success: true,
+      result,
+    });
+  } catch (error) {
+    console.error("Error searching users:", error);
     next(error);
   }
 };

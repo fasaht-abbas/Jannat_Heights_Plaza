@@ -100,7 +100,7 @@ export const LoginEmailController: RequestHandler<
         const accessToken = await generateAccessToken({ id: user?._id });
         const refreshToken = await generateRefreshToken({ id: user?._id });
         res.cookie("jwtRefresh", refreshToken, {
-          httpOnly: env.ENVIRONMENT !== "Production",
+          httpOnly: true,
           secure: env.ENVIRONMENT === "Production",
           expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         });
@@ -126,7 +126,7 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
       const accessToken = await generateAccessToken({ id: user?._id });
       const refreshToken = await generateRefreshToken({ id: user?._id });
       res.cookie("jwtRefresh", refreshToken, {
-        httpOnly: env.ENVIRONMENT !== "Production",
+        httpOnly: true,
         secure: env.ENVIRONMENT === "Production",
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
       });
@@ -140,6 +140,7 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
   }
 };
 
+// refreshing the jwts
 export const refreshTokens: RequestHandler = async (req, res, next) => {
   try {
     const cookies = req.cookies;
@@ -148,7 +149,7 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
     if (refreshToken) {
       const match = await verifyJwt(refreshToken, env.JWT_REFRESH_SECRET);
       if (match) {
-        const userId = new mongoose.Types.ObjectId(match.id);
+        const userId = match.id as mongoose.Types.ObjectId;
         const returnUser = await UserModel.findById(userId);
         const newAccessToken = await generateAccessToken({
           id: returnUser?._id,
@@ -159,7 +160,7 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
         res
           .status(200)
           .cookie("jwtRefresh", newRefreshToken, {
-            httpOnly: env.ENVIRONMENT !== "Production",
+            httpOnly: true,
             secure: env.ENVIRONMENT === "Production",
             expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
           })
@@ -168,6 +169,7 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
             accessToken: newAccessToken,
             returnUser,
           });
+      } else {
       }
     } else throw createHttpError(400, "Refresh token does not exist");
   } catch (error) {
@@ -205,7 +207,7 @@ export const isUserLoggedIn: RequestHandler = async (req, res, next) => {
 export const logoutController: RequestHandler = async (req, res, next) => {
   try {
     res.clearCookie("jwtRefresh", {
-      httpOnly: env.ENVIRONMENT !== "Production",
+      httpOnly: true,
       secure: env.ENVIRONMENT === "Production",
     });
     res.send({

@@ -394,23 +394,34 @@ export const AdminAddNewBooking: RequestHandler = async (req, res, next) => {
       startDate,
       endDate,
       amount,
-
       pmeathod,
     } = req.body;
-    const user = new UserModel({
-      name: name,
-      email: email,
-      phone: phone,
-      address: address,
-      CNIC: cnic,
-      password: password,
-    });
-    user.save();
+
+    console.log(amount);
+
+    // Check if a user with the provided CNIC already exists
+    let user = await UserModel.findOne({ CNIC: cnic });
+
+    if (!user) {
+      // If user does not exist, create a new user
+      user = new UserModel({
+        name,
+        email,
+        phone,
+        address,
+        CNIC: cnic,
+        password,
+      });
+      await user.save(); // Save the new user to the database
+    }
+
     const start = new Date(startDate);
     const end = new Date(endDate);
+
+    // Create the booking
     const booking = new BookingModel({
-      apartment: apartment,
-      customer: user?._id,
+      apartment,
+      customer: user._id,
       from: start,
       to: end,
       payment_meathod: pmeathod,
@@ -419,14 +430,13 @@ export const AdminAddNewBooking: RequestHandler = async (req, res, next) => {
       status: "Processing",
       booking_time: new Date(),
     });
-    booking.save();
-    if (booking) {
-      return res.status(200).send({
-        success: true,
-      });
-    } else {
-      throw createHttpError(400, "Something went wrong");
-    }
+
+    await booking.save(); // Save the booking to the database
+
+    return res.status(200).send({
+      success: true,
+      message: "Booking created successfully",
+    });
   } catch (error) {
     next(error);
   }

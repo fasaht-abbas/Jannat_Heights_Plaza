@@ -86,7 +86,7 @@ const LoginEmailController = (req, res, next) => __awaiter(void 0, void 0, void 
                 const accessToken = yield (0, GenerateJwt_1.generateAccessToken)({ id: user === null || user === void 0 ? void 0 : user._id });
                 const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
                 res.cookie("jwtRefresh", refreshToken, {
-                    httpOnly: validate_1.env.ENVIRONMENT !== "Production",
+                    httpOnly: true,
                     secure: validate_1.env.ENVIRONMENT === "Production",
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 });
@@ -115,7 +115,7 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             const accessToken = yield (0, GenerateJwt_1.generateAccessToken)({ id: user === null || user === void 0 ? void 0 : user._id });
             const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
             res.cookie("jwtRefresh", refreshToken, {
-                httpOnly: validate_1.env.ENVIRONMENT !== "Production",
+                httpOnly: true,
                 secure: validate_1.env.ENVIRONMENT === "Production",
                 expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
             });
@@ -130,6 +130,7 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     }
 });
 exports.AfterGoogleLogin = AfterGoogleLogin;
+// refreshing the jwts
 const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const cookies = req.cookies;
@@ -137,7 +138,7 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         if (refreshToken) {
             const match = yield (0, GenerateJwt_1.verifyJwt)(refreshToken, validate_1.env.JWT_REFRESH_SECRET);
             if (match) {
-                const userId = new mongoose_1.default.Types.ObjectId(match.id);
+                const userId = match.id;
                 const returnUser = yield userModel_1.UserModel.findById(userId);
                 const newAccessToken = yield (0, GenerateJwt_1.generateAccessToken)({
                     id: returnUser === null || returnUser === void 0 ? void 0 : returnUser._id,
@@ -148,7 +149,7 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 res
                     .status(200)
                     .cookie("jwtRefresh", newRefreshToken, {
-                    httpOnly: validate_1.env.ENVIRONMENT !== "Production",
+                    httpOnly: true,
                     secure: validate_1.env.ENVIRONMENT === "Production",
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 })
@@ -157,6 +158,8 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                     accessToken: newAccessToken,
                     returnUser,
                 });
+            }
+            else {
             }
         }
         else
@@ -198,7 +201,7 @@ exports.isUserLoggedIn = isUserLoggedIn;
 const logoutController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         res.clearCookie("jwtRefresh", {
-            httpOnly: validate_1.env.ENVIRONMENT !== "Production",
+            httpOnly: true,
             secure: validate_1.env.ENVIRONMENT === "Production",
         });
         res.send({

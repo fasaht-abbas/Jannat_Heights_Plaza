@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
-
-import Halls from "./pages/Halls";
 import Contact from "./pages/Contact";
 import Login from "./pages/Login";
 import SignUp from "./pages/SignUp";
@@ -26,8 +24,15 @@ import ManageApartment from "./pages/Protected/Management/Dashboard/ManageApartm
 import ManageBookings from "./pages/Protected/Management/Dashboard/ManageBookings";
 import Apartments from "./pages/Apartments";
 import MyBookings from "./pages/Protected/MyBookings";
+import SessionExpiredModal from "./components/SessionExpiredModal";
+import { hideModal } from "./redux/Session.Expire";
+import Help from "./pages/Help";
+import { io } from "socket.io-client";
+import { env } from "./utils/validate";
 
 function App() {
+  const userData = useSelector((state: RootState) => state.auth.userData);
+  const isModalOpen = useSelector((state: RootState) => state.modal.isOpen);
   const dispatch: appDispatch = useDispatch();
   const isAuthenticated = useSelector(
     (state: RootState) => state.auth.isAuthenticated
@@ -45,16 +50,35 @@ function App() {
   useEffect(() => {
     refresh();
   }, []);
+
+  const handleLoginAgain = () => {
+    dispatch(logout());
+    dispatch(hideModal());
+    window.location.href = "/login";
+  };
+
+  const socket = io(env.REACT_APP_API_BASE_URL);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to the server");
+    });
+  }, []);
+
   return (
-    <div className="App">
+    <>
+      <SessionExpiredModal
+        isOpen={isModalOpen}
+        onLoginAgain={handleLoginAgain}
+      />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="*" element={<UnAuthorizedPage />} />
         <Route path="/apartments" element={<Apartments />} />
-        <Route path="/halls" element={<Halls />} />
         <Route path="/contact" element={<Contact />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/help" element={<Help />} />
         <Route path="/authorization" element={<Authorization />} />
 
         <Route path="/reset-password" element={<PasswordReset />} />
@@ -74,7 +98,7 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </div>
+    </>
   );
 }
 

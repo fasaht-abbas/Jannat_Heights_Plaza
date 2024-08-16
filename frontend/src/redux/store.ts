@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import modalReducer from "./Session.Expire";
 
 export type appDispatch = typeof store.dispatch;
 export type RootState = ReturnType<typeof store.getState>;
@@ -17,6 +18,7 @@ const authPersistedReducer = persistReducer(authPersistConfig, authReducer);
 const store = configureStore({
   reducer: {
     auth: authPersistedReducer,
+    modal: modalReducer,
   },
 });
 

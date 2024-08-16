@@ -13,13 +13,14 @@ export const transporter = nodemailer.createTransport({
 
 interface messageBody {
   to: string;
+  from: string;
   subject: string;
   message: string;
 }
 
 export const sendMessage = async (options: messageBody) => {
   const mailoptions = {
-    from: env.NODEMAILER_GMAIL_USER,
+    from: options.from,
     to: options.to,
     subject: options.subject,
     text: options.message,
@@ -29,3 +30,6 @@ export const sendMessage = async (options: messageBody) => {
     createHttpError(400, "Message Could'nt be sent");
   }
 };
+
+/// add he new sendMessage from proprty these fields...
+// make sure to add the notifications functionaliy here

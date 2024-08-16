@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ContactUsMail = exports.UpdateUserRole = exports.getAllUsers = exports.updatePassword = exports.updateProfile = exports.verifyOTP = exports.sendOTP = exports.findUser = void 0;
+exports.search = exports.ContactUsMail = exports.UpdateUserRole = exports.getAllUsers = exports.updatePassword = exports.updateProfile = exports.verifyOTP = exports.sendOTP = exports.findUser = void 0;
 const userModel_1 = require("../models/userModel");
 const http_errors_1 = __importDefault(require("http-errors"));
 const nodemailer_1 = require("../utils/nodemailer");
@@ -65,6 +65,7 @@ const sendOTP = (req, res, next) => __awaiter(void 0, void 0, void 0, function* 
             throw (0, http_errors_1.default)(400, "Could not generate OTP");
         }
         const options = {
+            from: "Jannat Heights Plaza <jannatheights@gmail.com>",
             to: email,
             subject: "OTP to verify your email account",
             message: `Hi ${user === null || user === void 0 ? void 0 : user.name},\n\n` +
@@ -200,6 +201,9 @@ const UpdateUserRole = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
         if (!uid) {
             throw (0, http_errors_1.default)(404, "Could not find userId");
         }
+        if (!role) {
+            throw (0, http_errors_1.default)(404, "Could not find role");
+        }
         const id = new mongoose_1.default.Types.ObjectId(uid);
         yield userModel_1.UserModel.findByIdAndUpdate(id, {
             role: role,
@@ -217,6 +221,7 @@ const ContactUsMail = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     try {
         const { name, sender, message } = req.body;
         yield (0, nodemailer_1.sendMessage)({
+            from: validate_1.env === null || validate_1.env === void 0 ? void 0 : validate_1.env.NODEMAILER_GMAIL_USER,
             to: validate_1.env === null || validate_1.env === void 0 ? void 0 : validate_1.env.NODEMAILER_GMAIL_USER,
             subject: `Contact Form Message from ${name} ${sender}`,
             message: message,
@@ -230,4 +235,24 @@ const ContactUsMail = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.ContactUsMail = ContactUsMail;
+const search = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { query } = req.params;
+        if (!query) {
+            throw (0, http_errors_1.default)(400, "Query is required");
+        }
+        const result = yield userModel_1.UserModel.find({
+            $or: [{ email: { $regex: query, $options: "i" } }],
+        });
+        res.status(200).send({
+            success: true,
+            result,
+        });
+    }
+    catch (error) {
+        console.error("Error searching users:", error);
+        next(error);
+    }
+});
+exports.search = search;
 //# sourceMappingURL=userController.js.map

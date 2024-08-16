@@ -27,7 +27,7 @@ exports.transporter = nodemailer_1.default.createTransport({
 });
 const sendMessage = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const mailoptions = {
-        from: validate_1.env.NODEMAILER_GMAIL_USER,
+        from: options.from,
         to: options.to,
         subject: options.subject,
         text: options.message,
@@ -38,4 +38,6 @@ const sendMessage = (options) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.sendMessage = sendMessage;
+/// add he new sendMessage from proprty these fields...
+// make sure to add the notifications functionaliy here
 //# sourceMappingURL=nodemailer.js.map

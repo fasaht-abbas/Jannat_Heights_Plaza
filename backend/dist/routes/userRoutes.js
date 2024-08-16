@@ -10,10 +10,11 @@ const router = express_1.default.Router();
 router.post("/find-user", userController_1.findUser);
 router.post("/send-otp", userController_1.sendOTP);
 router.post("/verify-otp", userController_1.verifyOTP);
+router.put("/update-password", userController_1.updatePassword);
 router.get("/get-all-users", userController_1.getAllUsers);
 router.put("/update-user-role/:uid", userController_1.UpdateUserRole);
 router.post("/update-user", multer_1.upload.single("photo"), userController_1.updateProfile);
-router.put("/update-password", userController_1.updatePassword);
 router.post("/send-contact-mail", userController_1.ContactUsMail);
+router.get("/search/:query", userController_1.search);
 exports.default = router;
 //# sourceMappingURL=userRoutes.js.map

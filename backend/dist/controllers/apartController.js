@@ -388,20 +388,27 @@ exports.getSingleApart = getSingleApart;
 const AdminAddNewBooking = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, phone, address, cnic, password, apartment, startDate, endDate, amount, pmeathod, } = req.body;
-        const user = new userModel_1.UserModel({
-            name: name,
-            email: email,
-            phone: phone,
-            address: address,
-            CNIC: cnic,
-            password: password,
-        });
-        user.save();
+        console.log(amount);
+        // Check if a user with the provided CNIC already exists
+        let user = yield userModel_1.UserModel.findOne({ CNIC: cnic });
+        if (!user) {
+            // If user does not exist, create a new user
+            user = new userModel_1.UserModel({
+                name,
+                email,
+                phone,
+                address,
+                CNIC: cnic,
+                password,
+            });
+            yield user.save(); // Save the new user to the database
+        }
         const start = new Date(startDate);
         const end = new Date(endDate);
+        // Create the booking
         const booking = new BookingModel_1.BookingModel({
-            apartment: apartment,
-            customer: user === null || user === void 0 ? void 0 : user._id,
+            apartment,
+            customer: user._id,
             from: start,
             to: end,
             payment_meathod: pmeathod,
@@ -410,15 +417,11 @@ const AdminAddNewBooking = (req, res, next) => __awaiter(void 0, void 0, void 0,
             status: "Processing",
             booking_time: new Date(),
         });
-        booking.save();
-        if (booking) {
-            return res.status(200).send({
-                success: true,
-            });
-        }
-        else {
-            throw (0, http_errors_1.default)(400, "Something went wrong");
-        }
+        yield booking.save(); // Save the booking to the database
+        return res.status(200).send({
+            success: true,
+            message: "Booking created successfully",
+        });
     }
     catch (error) {
         next(error);

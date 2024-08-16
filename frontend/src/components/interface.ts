@@ -4,6 +4,7 @@ export interface LayoutWrapperProps {
   description?: string;
   keywords?: string;
   author?: string;
+  robots?: string;
 }
 
 export interface UserDTO {

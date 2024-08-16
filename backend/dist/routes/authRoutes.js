@@ -11,7 +11,6 @@ const router = express_1.default.Router();
 //for users registering with the email
 router.post("/register-email", authControllers_1.registerWithEmail);
 router.post("/get-user", authControllers_1.getAuthenticatedUser);
-router.post("/login-email");
 router.get("/google", passport_1.default.authenticate("google", { session: false }));
 router.get("/google/callback", passport_1.default.authenticate("google", {
     session: false,

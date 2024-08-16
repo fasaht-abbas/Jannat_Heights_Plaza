@@ -85,7 +85,12 @@ const SignUp = () => {
     nameRef.current?.focus();
   }, []);
   return (
-    <LayoutWrapper>
+    <LayoutWrapper
+      title="SignUp - Jannat Heights Plaza"
+      description="Jannat Heights offers luxury furnished apartments in Bahria Town Lahore. Experience fully furnished rooms, equipped kitchens, and air-conditioned comfort in our premium rental plaza. Book now for a world-class living experience."
+      keywords="Jannat Heights, luxury apartments Lahore, furnished apartments Bahria Town, rental plaza Bahria Town, fully furnished rentals Lahore, equipped kitchens, air-conditioned apartments, premium living Lahore"
+      author="Jannat Heights - Bahria Town Lahore"
+    >
       {loading ? (
         <Loading />
       ) : (
