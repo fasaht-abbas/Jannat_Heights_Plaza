@@ -24,7 +24,7 @@ export const env = cleanEnv(process.env, {
 });
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 export const passRegex = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
-export const nameRegex = /^[A-Za-z]+$/;
+export const nameRegex = /^[A-Za-z\s]+$/;
 export const phoneRegex = /^\d{8,}$/;
 
 const checkValidity = (data: string, regex: RegExp): Boolean => {
