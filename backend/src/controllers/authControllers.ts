@@ -60,7 +60,6 @@ export const registerWithEmail: RequestHandler<
 export const getAuthenticatedUser: RequestHandler = async (req, res, next) => {
   try {
     const { secret } = req.body;
-    console.log(secret);
     const decode = await verifyJwt(secret, env.JWT_ACCESS_SECRET);
     if (decode?.id) {
       const UserId = new mongoose.Types.ObjectId(decode?.id);
@@ -102,6 +101,7 @@ export const LoginEmailController: RequestHandler<
         res.cookie("jwtRefresh", refreshToken, {
           httpOnly: true,
           sameSite: "none",
+          domain: env.FRONTEND_URL,
           secure: env.ENVIRONMENT === "Production",
           expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         });
@@ -129,6 +129,7 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
       res.cookie("jwtRefresh", refreshToken, {
         httpOnly: true,
         secure: env.ENVIRONMENT === "Production",
+        domain: env.FRONTEND_URL,
         sameSite: "none",
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
       });
@@ -162,7 +163,9 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
         res
           .status(200)
           .cookie("jwtRefresh", newRefreshToken, {
+            domain: env.FRONTEND_URL,
             httpOnly: true,
+            sameSite: "none",
             secure: env.ENVIRONMENT === "Production",
             expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
           })
@@ -211,6 +214,7 @@ export const logoutController: RequestHandler = async (req, res, next) => {
     res.clearCookie("jwtRefresh", {
       httpOnly: true,
       secure: env.ENVIRONMENT === "Production",
+      domain: env.FRONTEND_URL,
     });
     res.send({
       success: true,

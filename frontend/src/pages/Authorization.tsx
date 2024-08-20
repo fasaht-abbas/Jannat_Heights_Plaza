@@ -18,10 +18,16 @@ const Authorization = () => {
   const secret = queryParams.get("secret");
 
   const getUser = async () => {
-    console.log("Fetching user with secret:", secret); // Add this line for logging
+    console.log("Fetching user with secret:", secret);
     setLoading(true);
     try {
-      const { data } = await api.post("/api/v1/auth/get-user", { secret });
+      const { data } = await api.post(
+        "/api/v1/auth/get-user",
+        { secret },
+        {
+          withCredentials: true,
+        }
+      );
 
       if (data?.success) {
         dispatch(
