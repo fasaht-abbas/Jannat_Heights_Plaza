@@ -7,6 +7,7 @@ import { FaFacebook, FaInstagram, FaWhatsapp } from "react-icons/fa";
 import { HeadingText } from "../components/reuseables/CustomTypographies";
 import { api, handleError } from "../utils/axios";
 import { Helmet } from "react-helmet";
+import toast from "react-hot-toast";
 
 interface IFormInputs {
   name: string;
@@ -23,6 +24,7 @@ const schema = yup.object().shape({
 const ContactUs: React.FC = () => {
   const {
     register,
+    reset,
     handleSubmit,
     formState: { errors },
   } = useForm<IFormInputs>({
@@ -35,10 +37,11 @@ const ContactUs: React.FC = () => {
         sender: data.email,
         message: data.message,
       });
-      alert(response.data.message);
+      toast.success(response.data.message);
+      reset();
     } catch (error) {
       console.error("Error sending email:", error);
-      alert("Failed to send message. Please try again later.");
+      handleError(error);
     }
   };
 

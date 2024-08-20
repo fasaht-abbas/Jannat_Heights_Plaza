@@ -18,7 +18,7 @@ const validate_1 = require("./validate");
 const http_errors_1 = __importDefault(require("http-errors"));
 exports.transporter = nodemailer_1.default.createTransport({
     host: validate_1.env.NODEMAILER_SMTP_HOST,
-    port: validate_1.env.NODEMAILER_SMTP_PORT,
+    port: validate_1.env.ENVIRONMENT === "production" ? 465 : validate_1.env.NODEMAILER_SMTP_PORT,
     secure: validate_1.env.ENVIRONMENT === "Production",
     auth: {
         user: validate_1.env.NODEMAILER_GMAIL_USER,

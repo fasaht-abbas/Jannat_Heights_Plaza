@@ -151,27 +151,35 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
 
 // refreshing the jwts
 export const refreshTokens: RequestHandler = async (req, res, next) => {
+  console.log("Received request for refresh token");
   try {
     const cookies = req.cookies;
+    console.log("Cookies:", cookies);
 
     const refreshToken = cookies.jwtRefresh;
     if (refreshToken) {
+      console.log("Refresh token found, verifying...");
       const match = await verifyJwt(refreshToken, env.JWT_REFRESH_SECRET);
       if (match) {
+        console.log("JWT verified, fetching user...");
         const userId = match.id as mongoose.Types.ObjectId;
         const returnUser = await UserModel.findById(userId);
+        console.log("User found:", returnUser);
+
         const newAccessToken = await generateAccessToken({
           id: returnUser?._id,
         });
         const newRefreshToken = await generateRefreshToken({
           id: returnUser?._id,
         });
+        console.log("Tokens generated, sending response...");
+
         res
           .status(200)
           .cookie("jwtRefresh", newRefreshToken, {
             httpOnly: true,
-            sameSite: "none",
             secure: env.ENVIRONMENT === "Production",
+            sameSite: "none",
             domain:
               env.ENVIRONMENT === "Production"
                 ? ".jannatheightsplaza.live"
@@ -184,9 +192,11 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
             returnUser,
           });
       } else {
+        throw createHttpError(401, "Invalid refresh token");
       }
     } else throw createHttpError(400, "Refresh token does not exist");
   } catch (error) {
+    console.error("Error in refreshTokens:", error);
     next(error);
   }
 };

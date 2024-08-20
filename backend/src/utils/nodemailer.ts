@@ -3,7 +3,7 @@ import { env } from "./validate";
 import createHttpError from "http-errors";
 export const transporter = nodemailer.createTransport({
   host: env.NODEMAILER_SMTP_HOST,
-  port: env.NODEMAILER_SMTP_PORT,
+  port: env.ENVIRONMENT === "production" ? 465 : env.NODEMAILER_SMTP_PORT,
   secure: env.ENVIRONMENT === "Production",
   auth: {
     user: env.NODEMAILER_GMAIL_USER,
