@@ -29,7 +29,7 @@ exports.env = (0, envalid_1.cleanEnv)(process.env, {
 });
 exports.emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 exports.passRegex = /^(?=.*[a-zA-Z])(?=.*\d).*$/;
-exports.nameRegex = /^[A-Za-z]+$/;
+exports.nameRegex = /^[A-Za-z\s]+$/;
 exports.phoneRegex = /^\d{8,}$/;
 const checkValidity = (data, regex) => {
     if (!(data === undefined || null)) {

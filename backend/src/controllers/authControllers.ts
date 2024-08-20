@@ -101,6 +101,7 @@ export const LoginEmailController: RequestHandler<
         const refreshToken = await generateRefreshToken({ id: user?._id });
         res.cookie("jwtRefresh", refreshToken, {
           httpOnly: true,
+          sameSite: "none",
           secure: env.ENVIRONMENT === "Production",
           expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         });
@@ -128,6 +129,7 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
       res.cookie("jwtRefresh", refreshToken, {
         httpOnly: true,
         secure: env.ENVIRONMENT === "Production",
+        sameSite: "none",
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
       });
       res.redirect(

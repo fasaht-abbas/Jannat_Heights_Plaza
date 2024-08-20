@@ -87,6 +87,7 @@ const LoginEmailController = (req, res, next) => __awaiter(void 0, void 0, void 
                 const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
                 res.cookie("jwtRefresh", refreshToken, {
                     httpOnly: true,
+                    sameSite: "none",
                     secure: validate_1.env.ENVIRONMENT === "Production",
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 });
@@ -117,6 +118,7 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             res.cookie("jwtRefresh", refreshToken, {
                 httpOnly: true,
                 secure: validate_1.env.ENVIRONMENT === "Production",
+                sameSite: "none",
                 expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
             });
             res.redirect(validate_1.env.FRONTEND_URL +
