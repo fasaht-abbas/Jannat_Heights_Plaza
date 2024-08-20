@@ -87,8 +87,8 @@ const LoginEmailController = (req, res, next) => __awaiter(void 0, void 0, void 
                 res.cookie("jwtRefresh", refreshToken, {
                     httpOnly: true,
                     sameSite: "none",
-                    secure: validate_1.env.ENVIRONMENT === "Production",
-                    domain: validate_1.env.ENVIRONMENT === "Production"
+                    secure: validate_1.env.ENVIRONMENT == "Production",
+                    domain: validate_1.env.ENVIRONMENT == "Production"
                         ? ".jannatheightsplaza.live"
                         : undefined,
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
@@ -119,9 +119,9 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             const refreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({ id: user === null || user === void 0 ? void 0 : user._id });
             res.cookie("jwtRefresh", refreshToken, {
                 httpOnly: true,
-                secure: validate_1.env.ENVIRONMENT === "Production",
+                secure: validate_1.env.ENVIRONMENT == "Production",
                 sameSite: "none",
-                domain: validate_1.env.ENVIRONMENT === "Production"
+                domain: validate_1.env.ENVIRONMENT == "Production"
                     ? ".jannatheightsplaza.live"
                     : undefined,
                 expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
@@ -158,8 +158,8 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                     .cookie("jwtRefresh", newRefreshToken, {
                     httpOnly: true,
                     sameSite: "none",
-                    secure: validate_1.env.ENVIRONMENT === "Production",
-                    domain: validate_1.env.ENVIRONMENT === "Production"
+                    secure: validate_1.env.ENVIRONMENT == "Production",
+                    domain: validate_1.env.ENVIRONMENT == "Production"
                         ? ".jannatheightsplaza.live"
                         : undefined,
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
@@ -213,8 +213,8 @@ const logoutController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
     try {
         res.clearCookie("jwtRefresh", {
             httpOnly: true,
-            secure: validate_1.env.ENVIRONMENT === "Production",
-            domain: validate_1.env.ENVIRONMENT === "Production"
+            secure: validate_1.env.ENVIRONMENT == "Production",
+            domain: validate_1.env.ENVIRONMENT == "Production"
                 ? ".jannatheightsplaza.live"
                 : undefined,
         });

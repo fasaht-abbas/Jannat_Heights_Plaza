@@ -101,9 +101,9 @@ export const LoginEmailController: RequestHandler<
         res.cookie("jwtRefresh", refreshToken, {
           httpOnly: true,
           sameSite: "none",
-          secure: env.ENVIRONMENT === "Production",
+          secure: env.ENVIRONMENT == "Production",
           domain:
-            env.ENVIRONMENT === "Production"
+            env.ENVIRONMENT == "Production"
               ? ".jannatheightsplaza.live"
               : undefined,
           expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
@@ -131,10 +131,10 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
       const refreshToken = await generateRefreshToken({ id: user?._id });
       res.cookie("jwtRefresh", refreshToken, {
         httpOnly: true,
-        secure: env.ENVIRONMENT === "Production",
+        secure: env.ENVIRONMENT == "Production",
         sameSite: "none",
         domain:
-          env.ENVIRONMENT === "Production"
+          env.ENVIRONMENT == "Production"
             ? ".jannatheightsplaza.live"
             : undefined,
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
@@ -171,9 +171,9 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
           .cookie("jwtRefresh", newRefreshToken, {
             httpOnly: true,
             sameSite: "none",
-            secure: env.ENVIRONMENT === "Production",
+            secure: env.ENVIRONMENT == "Production",
             domain:
-              env.ENVIRONMENT === "Production"
+              env.ENVIRONMENT == "Production"
                 ? ".jannatheightsplaza.live"
                 : undefined,
             expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
@@ -222,9 +222,9 @@ export const logoutController: RequestHandler = async (req, res, next) => {
   try {
     res.clearCookie("jwtRefresh", {
       httpOnly: true,
-      secure: env.ENVIRONMENT === "Production",
+      secure: env.ENVIRONMENT == "Production",
       domain:
-        env.ENVIRONMENT === "Production"
+        env.ENVIRONMENT == "Production"
           ? ".jannatheightsplaza.live"
           : undefined,
     });
