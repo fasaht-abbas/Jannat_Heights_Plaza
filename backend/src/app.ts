@@ -25,7 +25,6 @@ app.use(morgan("dev"));
 
 app.use(cookieParser());
 app.use(passport.initialize());
-app.use(session);
 
 //routes related to the user
 app.use("/api/v1/user", userRoutes);
