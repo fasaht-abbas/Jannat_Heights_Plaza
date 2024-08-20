@@ -53,7 +53,6 @@ exports.registerWithEmail = registerWithEmail;
 const getAuthenticatedUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { secret } = req.body;
-        console.log(secret);
         const decode = yield (0, GenerateJwt_1.verifyJwt)(secret, validate_1.env.JWT_ACCESS_SECRET);
         if (decode === null || decode === void 0 ? void 0 : decode.id) {
             const UserId = new mongoose_1.default.Types.ObjectId(decode === null || decode === void 0 ? void 0 : decode.id);
@@ -88,6 +87,7 @@ const LoginEmailController = (req, res, next) => __awaiter(void 0, void 0, void 
                 res.cookie("jwtRefresh", refreshToken, {
                     httpOnly: true,
                     sameSite: "none",
+                    domain: validate_1.env.FRONTEND_URL,
                     secure: validate_1.env.ENVIRONMENT === "Production",
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 });
@@ -118,6 +118,7 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             res.cookie("jwtRefresh", refreshToken, {
                 httpOnly: true,
                 secure: validate_1.env.ENVIRONMENT === "Production",
+                domain: validate_1.env.FRONTEND_URL,
                 sameSite: "none",
                 expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
             });
@@ -151,7 +152,9 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 res
                     .status(200)
                     .cookie("jwtRefresh", newRefreshToken, {
+                    domain: validate_1.env.FRONTEND_URL,
                     httpOnly: true,
+                    sameSite: "none",
                     secure: validate_1.env.ENVIRONMENT === "Production",
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 })
@@ -205,6 +208,7 @@ const logoutController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         res.clearCookie("jwtRefresh", {
             httpOnly: true,
             secure: validate_1.env.ENVIRONMENT === "Production",
+            domain: validate_1.env.FRONTEND_URL,
         });
         res.send({
             success: true,

@@ -17,7 +17,7 @@ router.get("/google/callback", passport_1.default.authenticate("google", {
     failureRedirect: validate_1.env.FRONTEND_URL + "/login",
 }), authControllers_1.AfterGoogleLogin);
 router.post("/login-email", authControllers_1.LoginEmailController);
-router.get("/refresh-tokens", authControllers_1.refreshTokens);
+router.get("/refresh-tokens", authControllers_1.isUserLoggedIn, authControllers_1.refreshTokens);
 router.get("/protected", authControllers_1.isUserLoggedIn);
 router.post("/logout", authControllers_1.logoutController);
 exports.default = router;
