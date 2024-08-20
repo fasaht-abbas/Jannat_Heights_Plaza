@@ -129,8 +129,11 @@ export const AfterGoogleLogin: RequestHandler = async (req, res, next) => {
       res.cookie("jwtRefresh", refreshToken, {
         httpOnly: true,
         secure: env.ENVIRONMENT === "Production",
-        domain: env.FRONTEND_URL,
         sameSite: "none",
+        domain:
+          env.ENVIRONMENT === "Production"
+            ? ".jannatheightsplaza.live"
+            : undefined,
         expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
       });
       res.redirect(
@@ -163,10 +166,13 @@ export const refreshTokens: RequestHandler = async (req, res, next) => {
         res
           .status(200)
           .cookie("jwtRefresh", newRefreshToken, {
-            domain: env.FRONTEND_URL,
             httpOnly: true,
             sameSite: "none",
             secure: env.ENVIRONMENT === "Production",
+            domain:
+              env.ENVIRONMENT === "Production"
+                ? ".jannatheightsplaza.live"
+                : undefined,
             expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
           })
           .send({
@@ -214,7 +220,10 @@ export const logoutController: RequestHandler = async (req, res, next) => {
     res.clearCookie("jwtRefresh", {
       httpOnly: true,
       secure: env.ENVIRONMENT === "Production",
-      domain: env.FRONTEND_URL,
+      domain:
+        env.ENVIRONMENT === "Production"
+          ? ".jannatheightsplaza.live"
+          : undefined,
     });
     res.send({
       success: true,

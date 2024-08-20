@@ -118,8 +118,10 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
             res.cookie("jwtRefresh", refreshToken, {
                 httpOnly: true,
                 secure: validate_1.env.ENVIRONMENT === "Production",
-                domain: validate_1.env.FRONTEND_URL,
                 sameSite: "none",
+                domain: validate_1.env.ENVIRONMENT === "Production"
+                    ? ".jannatheightsplaza.live"
+                    : undefined,
                 expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
             });
             res.redirect(validate_1.env.FRONTEND_URL +
@@ -152,10 +154,12 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 res
                     .status(200)
                     .cookie("jwtRefresh", newRefreshToken, {
-                    domain: validate_1.env.FRONTEND_URL,
                     httpOnly: true,
                     sameSite: "none",
                     secure: validate_1.env.ENVIRONMENT === "Production",
+                    domain: validate_1.env.ENVIRONMENT === "Production"
+                        ? ".jannatheightsplaza.live"
+                        : undefined,
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 })
                     .send({
@@ -208,7 +212,9 @@ const logoutController = (req, res, next) => __awaiter(void 0, void 0, void 0, f
         res.clearCookie("jwtRefresh", {
             httpOnly: true,
             secure: validate_1.env.ENVIRONMENT === "Production",
-            domain: validate_1.env.FRONTEND_URL,
+            domain: validate_1.env.ENVIRONMENT === "Production"
+                ? ".jannatheightsplaza.live"
+                : undefined,
         });
         res.send({
             success: true,
