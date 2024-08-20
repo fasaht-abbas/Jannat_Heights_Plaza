@@ -9,6 +9,7 @@ import apartRoutes from "./routes/apartRoutes";
 import "./utils/passport";
 import cookieParser from "cookie-parser";
 import { env } from "./utils/validate";
+import session from "express-session";
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,7 @@ app.use(morgan("dev"));
 
 app.use(cookieParser());
 app.use(passport.initialize());
+app.use(session);
 
 //routes related to the user
 app.use("/api/v1/user", userRoutes);

@@ -101,8 +101,11 @@ export const LoginEmailController: RequestHandler<
         res.cookie("jwtRefresh", refreshToken, {
           httpOnly: true,
           sameSite: "none",
-          domain: env.FRONTEND_URL,
           secure: env.ENVIRONMENT === "Production",
+          domain:
+            env.ENVIRONMENT === "Production"
+              ? ".jannatheightsplaza.live"
+              : undefined,
           expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
         });
         return res.status(200).send({
