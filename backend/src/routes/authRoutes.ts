@@ -31,7 +31,7 @@ router.get(
 
 router.post("/login-email", LoginEmailController);
 
-router.get("/refresh-tokens", isUserLoggedIn, refreshTokens);
+router.get("/refresh-tokens", refreshTokens);
 
 router.get("/protected", isUserLoggedIn);
 
