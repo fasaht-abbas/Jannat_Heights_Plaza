@@ -87,8 +87,10 @@ const LoginEmailController = (req, res, next) => __awaiter(void 0, void 0, void 
                 res.cookie("jwtRefresh", refreshToken, {
                     httpOnly: true,
                     sameSite: "none",
-                    domain: validate_1.env.FRONTEND_URL,
                     secure: validate_1.env.ENVIRONMENT === "Production",
+                    domain: validate_1.env.ENVIRONMENT === "Production"
+                        ? ".jannatheightsplaza.live"
+                        : undefined,
                     expires: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
                 });
                 return res.status(200).send({
