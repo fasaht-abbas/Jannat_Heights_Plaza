@@ -232,7 +232,6 @@ export const makeCustomerBooking: RequestHandler = async (req, res, next) => {
     const apart = await ApartModel.findById(
       new mongoose.Types.ObjectId(apartment)
     );
-    console.log(user, apart);
     if (user && apart) {
       const newBooking = await BookingModel.create({
         from: start,
@@ -396,8 +395,6 @@ export const AdminAddNewBooking: RequestHandler = async (req, res, next) => {
       amount,
       pmeathod,
     } = req.body;
-
-    console.log(amount);
 
     // Check if a user with the provided CNIC already exists
     let user = await UserModel.findOne({ CNIC: cnic });

@@ -247,19 +247,18 @@ const ManageBookings = () => {
     fetchAparts();
   }, []);
 
-  const socket = io(env.REACT_APP_API_BASE_URL);
+  // const socket = io(env.REACT_APP_API_BASE_URL);
 
-  useEffect(() => {
-    // Listen for booking notifications
-    socket.on("newBooking", (bookingData) => {
-      console.log("New booking received:", bookingData);
-      // Display notification logic here
-    });
+  // useEffect(() => {
+  //   // Listen for booking notifications
+  //   socket.on("newBooking", (bookingData) => {
+  //     // Display notification logic here
+  //   });
 
-    return () => {
-      socket.off("newBooking");
-    };
-  }, []);
+  //   return () => {
+  //     socket.off("newBooking");
+  //   };
+  // }, []);
 
   return (
     <DashWrapper>

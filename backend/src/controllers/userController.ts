@@ -11,7 +11,6 @@ import { env } from "../utils/validate";
 export const findUser: RequestHandler = async (req, res, next) => {
   try {
     const { email } = req.body;
-    console.log(email);
     const user = await UserModel.findOne({ email: email });
     if (!user) {
       return res.status(401).send({
@@ -114,9 +113,7 @@ export const updateProfile: RequestHandler = async (req, res, next) => {
         await cloudinary.uploader.destroy(foundUser?.photo_cd_public_id);
       }
       const localPath = req.file?.path;
-      console.log(localPath);
       const response = await uploadOnCloudinary(localPath);
-      console.log(response);
       await UserModel.findByIdAndUpdate(userId, {
         profilePhoto: response?.secure_url,
         photo_cd_public_id: response?.public_id,
@@ -236,7 +233,6 @@ export const search: RequestHandler = async (req, res, next) => {
       result,
     });
   } catch (error) {
-    console.error("Error searching users:", error);
     next(error);
   }
 };

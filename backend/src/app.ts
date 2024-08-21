@@ -36,7 +36,6 @@ app.use((req, res, next) => {
   next(createHttpError(404, "Api endpoint not found"));
 });
 app.use((error: unknown, req: Request, res: Response, next: NextFunction) => {
-  console.log(error);
   let errorMessage = "an unknown error occured";
   let statusCode = 500;
   if (isHttpError(error)) {

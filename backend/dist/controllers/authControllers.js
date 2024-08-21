@@ -139,26 +139,20 @@ const AfterGoogleLogin = (req, res, next) => __awaiter(void 0, void 0, void 0, f
 exports.AfterGoogleLogin = AfterGoogleLogin;
 // refreshing the jwts
 const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Received request for refresh token");
     try {
         const cookies = req.cookies;
-        console.log("Cookies:", cookies);
         const refreshToken = cookies.jwtRefresh;
         if (refreshToken) {
-            console.log("Refresh token found, verifying...");
             const match = yield (0, GenerateJwt_1.verifyJwt)(refreshToken, validate_1.env.JWT_REFRESH_SECRET);
             if (match) {
-                console.log("JWT verified, fetching user...");
                 const userId = match.id;
                 const returnUser = yield userModel_1.UserModel.findById(userId);
-                console.log("User found:", returnUser);
                 const newAccessToken = yield (0, GenerateJwt_1.generateAccessToken)({
                     id: returnUser === null || returnUser === void 0 ? void 0 : returnUser._id,
                 });
                 const newRefreshToken = yield (0, GenerateJwt_1.generateRefreshToken)({
                     id: returnUser === null || returnUser === void 0 ? void 0 : returnUser._id,
                 });
-                console.log("Tokens generated, sending response...");
                 res
                     .status(200)
                     .cookie("jwtRefresh", newRefreshToken, {
@@ -184,7 +178,6 @@ const refreshTokens = (req, res, next) => __awaiter(void 0, void 0, void 0, func
             throw (0, http_errors_1.default)(400, "Refresh token does not exist");
     }
     catch (error) {
-        console.error("Error in refreshTokens:", error);
         next(error);
     }
 });

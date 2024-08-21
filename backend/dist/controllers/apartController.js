@@ -234,7 +234,6 @@ const makeCustomerBooking = (req, res, next) => __awaiter(void 0, void 0, void 0
         const end = new Date(endDate);
         const user = yield userModel_1.UserModel.findById(new mongoose_1.default.Types.ObjectId(customerId));
         const apart = yield ApartmentModel_1.ApartModel.findById(new mongoose_1.default.Types.ObjectId(apartment));
-        console.log(user, apart);
         if (user && apart) {
             const newBooking = yield BookingModel_1.BookingModel.create({
                 from: start,
@@ -388,7 +387,6 @@ exports.getSingleApart = getSingleApart;
 const AdminAddNewBooking = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { name, email, phone, address, cnic, password, apartment, startDate, endDate, amount, pmeathod, } = req.body;
-        console.log(amount);
         // Check if a user with the provided CNIC already exists
         let user = yield userModel_1.UserModel.findOne({ CNIC: cnic });
         if (!user) {

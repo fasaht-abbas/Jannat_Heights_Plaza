@@ -30,26 +30,29 @@ app.get("/*", (req, res) => {
 // Final deployment se pehlay ye colors wali sab chezain khatam kar dena.
 
 const server = createServer(app);
-const io = new Server(server, {
-  cors: {
-    origin: env.FRONTEND_URL, // Adjust for your frontend URL
-    methods: ["GET", "POST"],
-  },
-});
 
-io.on("connect", (socket) => {
-  console.log("A user connected" + socket.id);
+// all the  console logs are commented
 
-  socket.on("disconnect", async () => {
-    console.log("a user disconnected", socket.id);
-  });
-});
-// Listen for incoming socket connections
+// const io = new Server(server, {
+//   cors: {
+//     origin: env.FRONTEND_URL, // Adjust for your frontend URL
+//     methods: ["GET", "POST"],
+//   },
+// });
 
-// Example: Emit an event when a booking is made
-const notifyAdminBooking = (bookingData: any) => {
-  io.emit("newBooking", bookingData);
-};
+// io.on("connect", (socket) => {
+//   // console.log("A user connected" + socket.id);
+
+//   socket.on("disconnect", async () => {
+//     // console.log("a user disconnected", socket.id);
+//   });
+// });
+// // Listen for incoming socket connections
+
+// // Example: Emit an event when a booking is made
+// const notifyAdminBooking = (bookingData: any) => {
+//   io.emit("newBooking", bookingData);
+// };
 
 mongoose
   .connect(env.MONGO_URL as string)

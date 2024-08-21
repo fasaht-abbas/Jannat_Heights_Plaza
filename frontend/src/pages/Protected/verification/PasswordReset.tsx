@@ -112,7 +112,7 @@ const PasswordReset = () => {
           toast.error("something went wrong");
         }
       } catch (error) {
-        console.log(error);
+        handleError(error);
       }
   };
 

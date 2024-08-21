@@ -24,7 +24,6 @@ const validate_1 = require("../utils/validate");
 const findUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email } = req.body;
-        console.log(email);
         const user = yield userModel_1.UserModel.findOne({ email: email });
         if (!user) {
             return res.status(401).send({
@@ -129,9 +128,7 @@ const updateProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, func
                 yield cloudinary_2.v2.uploader.destroy(foundUser === null || foundUser === void 0 ? void 0 : foundUser.photo_cd_public_id);
             }
             const localPath = (_a = req.file) === null || _a === void 0 ? void 0 : _a.path;
-            console.log(localPath);
             const response = yield (0, cloudinary_1.uploadOnCloudinary)(localPath);
-            console.log(response);
             yield userModel_1.UserModel.findByIdAndUpdate(userId, {
                 profilePhoto: response === null || response === void 0 ? void 0 : response.secure_url,
                 photo_cd_public_id: response === null || response === void 0 ? void 0 : response.public_id,
@@ -250,7 +247,6 @@ const search = (req, res, next) => __awaiter(void 0, void 0, void 0, function* (
         });
     }
     catch (error) {
-        console.error("Error searching users:", error);
         next(error);
     }
 });

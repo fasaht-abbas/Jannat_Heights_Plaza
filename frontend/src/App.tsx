@@ -57,13 +57,15 @@ function App() {
     window.location.href = "/login";
   };
 
-  const socket = io(env.REACT_APP_API_BASE_URL);
+  // this is for the real time connectivity soket io
 
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected to the server");
-    });
-  }, []);
+  // const socket = io(env.REACT_APP_API_BASE_URL);
+
+  // useEffect(() => {
+  //   socket.on("connect", () => {
+  //     console.log("Connected to the server");
+  //   });
+  // }, []);
 
   return (
     <>
