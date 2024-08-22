@@ -6,10 +6,20 @@ import colors from "colors";
 import path from "path";
 import express from "express";
 import { createServer } from "http";
+import https from "https";
+import fs from "fs";
 import { Server } from "socket.io";
 
 // Load environment variables
 dotenv.config();
+
+const sslOptions = {
+  key: fs.readFileSync(`/etc/letsencrypt/live/${env.SERVER_URL}/privkey.pem`),
+  cert: fs.readFileSync(
+    `/etc/letsencrypt/live/${env.SERVER_URL}/fullchain.pem`
+  ),
+  ca: fs.readFileSync(`/etc/letsencrypt/live/${env.SERVER_URL}/chain.pem`), // Optional, includes the chain of trust
+};
 
 app.use(
   express.static(path.join(__dirname, "build"), {
@@ -26,33 +36,8 @@ app.use(
 app.get("/*", (req, res) => {
   res.sendFile(path.join(__dirname, "build", "index.html"));
 });
-// Setting up REST
-// Final deployment se pehlay ye colors wali sab chezain khatam kar dena.
 
-const server = createServer(app);
-
-// all the  console logs are commented
-
-// const io = new Server(server, {
-//   cors: {
-//     origin: env.FRONTEND_URL, // Adjust for your frontend URL
-//     methods: ["GET", "POST"],
-//   },
-// });
-
-// io.on("connect", (socket) => {
-//   // console.log("A user connected" + socket.id);
-
-//   socket.on("disconnect", async () => {
-//     // console.log("a user disconnected", socket.id);
-//   });
-// });
-// // Listen for incoming socket connections
-
-// // Example: Emit an event when a booking is made
-// const notifyAdminBooking = (bookingData: any) => {
-//   io.emit("newBooking", bookingData);
-// };
+const server = https.createServer(sslOptions, app);
 
 mongoose
   .connect(env.MONGO_URL as string)
