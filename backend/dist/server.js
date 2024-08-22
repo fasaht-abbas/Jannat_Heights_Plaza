@@ -10,9 +10,14 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const colors_1 = __importDefault(require("colors"));
 const path_1 = __importDefault(require("path"));
 const express_1 = __importDefault(require("express"));
-const http_1 = require("http");
+const https_1 = __importDefault(require("https"));
+const fs_1 = __importDefault(require("fs"));
 // Load environment variables
 dotenv_1.default.config();
+const sslOptions = {
+    key: fs_1.default.readFileSync(path_1.default.join(__dirname, "key.pem")),
+    cert: fs_1.default.readFileSync(path_1.default.join(__dirname, "cert.pem")),
+};
 app_1.default.use(express_1.default.static(path_1.default.join(__dirname, "build"), {
     setHeaders: (res, path) => {
         if (path.endsWith(".css")) {
@@ -28,7 +33,7 @@ app_1.default.get("/*", (req, res) => {
 });
 // Setting up REST
 // Final deployment se pehlay ye colors wali sab chezain khatam kar dena.
-const server = (0, http_1.createServer)(app_1.default);
+const server = https_1.default.createServer(sslOptions, app_1.default);
 // all the  console logs are commented
 // const io = new Server(server, {
 //   cors: {

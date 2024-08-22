@@ -6,10 +6,17 @@ import colors from "colors";
 import path from "path";
 import express from "express";
 import { createServer } from "http";
+import https from "https";
+import fs from "fs";
 import { Server } from "socket.io";
 
 // Load environment variables
 dotenv.config();
+
+const sslOptions = {
+  key: fs.readFileSync(path.join(__dirname, "key.pem")),
+  cert: fs.readFileSync(path.join(__dirname, "cert.pem")),
+};
 
 app.use(
   express.static(path.join(__dirname, "build"), {
@@ -29,7 +36,7 @@ app.get("/*", (req, res) => {
 // Setting up REST
 // Final deployment se pehlay ye colors wali sab chezain khatam kar dena.
 
-const server = createServer(app);
+const server = https.createServer(sslOptions, app);
 
 // all the  console logs are commented
 
