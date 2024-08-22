@@ -9,6 +9,8 @@ export const transporter = nodemailer.createTransport({
     user: env.NODEMAILER_GMAIL_USER,
     pass: env.NODEMAILER_GMAIL_PASSWORD,
   },
+  debug: true,
+  logger: true,
 });
 
 interface messageBody {

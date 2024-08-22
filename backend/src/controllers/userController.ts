@@ -213,6 +213,7 @@ export const ContactUsMail: RequestHandler = async (req, res, next) => {
       .send({ success: true, message: "Email sent successfully!" });
   } catch (error) {
     next(error);
+    console.log(error);
   }
 };
 

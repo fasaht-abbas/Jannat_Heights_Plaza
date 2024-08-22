@@ -24,6 +24,8 @@ exports.transporter = nodemailer_1.default.createTransport({
         user: validate_1.env.NODEMAILER_GMAIL_USER,
         pass: validate_1.env.NODEMAILER_GMAIL_PASSWORD,
     },
+    debug: true,
+    logger: true,
 });
 const sendMessage = (options) => __awaiter(void 0, void 0, void 0, function* () {
     const mailoptions = {

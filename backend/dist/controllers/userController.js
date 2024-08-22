@@ -229,6 +229,7 @@ const ContactUsMail = (req, res, next) => __awaiter(void 0, void 0, void 0, func
     }
     catch (error) {
         next(error);
+        console.log(error);
     }
 });
 exports.ContactUsMail = ContactUsMail;
