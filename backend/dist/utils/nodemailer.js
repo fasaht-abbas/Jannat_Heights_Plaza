@@ -24,6 +24,10 @@ exports.transporter = nodemailer_1.default.createTransport({
         user: validate_1.env.NODEMAILER_GMAIL_USER,
         pass: validate_1.env.NODEMAILER_GMAIL_PASSWORD,
     },
+    tls: {
+        rejectUnauthorized: false,
+        minVersion: "TLSv1.2", // Ensures TLS 1.2 or higher is used
+    },
     debug: true,
     logger: true,
 });
