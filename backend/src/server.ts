@@ -14,11 +14,15 @@ import { Server } from "socket.io";
 dotenv.config();
 
 const sslOptions = {
-  key: fs.readFileSync(`/etc/letsencrypt/live/${env.SERVER_URL}/privkey.pem`),
-  cert: fs.readFileSync(
-    `/etc/letsencrypt/live/${env.SERVER_URL}/fullchain.pem`
+  key: fs.readFileSync(
+    `/etc/letsencrypt/live/api.jannatheightsplaza.live/privkey.pem`
   ),
-  ca: fs.readFileSync(`/etc/letsencrypt/live/${env.SERVER_URL}/chain.pem`), // Optional, includes the chain of trust
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/api.jannatheightsplaza.live/fullchain.pem"
+  ),
+  ca: fs.readFileSync(
+    "/etc/letsencrypt/live/api.jannatheightsplaza.live/chain.pem"
+  ), // Optional, includes the chain of trust
 };
 
 app.use(

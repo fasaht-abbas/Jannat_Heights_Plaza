@@ -15,9 +15,9 @@ const fs_1 = __importDefault(require("fs"));
 // Load environment variables
 dotenv_1.default.config();
 const sslOptions = {
-    key: fs_1.default.readFileSync(`/etc/letsencrypt/live/${validate_1.env.SERVER_URL}/privkey.pem`),
-    cert: fs_1.default.readFileSync(`/etc/letsencrypt/live/${validate_1.env.SERVER_URL}/fullchain.pem`),
-    ca: fs_1.default.readFileSync(`/etc/letsencrypt/live/${validate_1.env.SERVER_URL}/chain.pem`), // Optional, includes the chain of trust
+    key: fs_1.default.readFileSync(`/etc/letsencrypt/live/api.jannatheightsplaza.live/privkey.pem`),
+    cert: fs_1.default.readFileSync("/etc/letsencrypt/live/api.jannatheightsplaza.live/fullchain.pem"),
+    ca: fs_1.default.readFileSync("/etc/letsencrypt/live/api.jannatheightsplaza.live/chain.pem"), // Optional, includes the chain of trust
 };
 app_1.default.use(express_1.default.static(path_1.default.join(__dirname, "build"), {
     setHeaders: (res, path) => {
