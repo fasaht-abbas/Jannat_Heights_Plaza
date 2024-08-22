@@ -9,13 +9,6 @@ export const transporter = nodemailer.createTransport({
     user: env.NODEMAILER_GMAIL_USER,
     pass: env.NODEMAILER_GMAIL_PASSWORD,
   },
-  tls: {
-    rejectUnauthorized: false,
-    minVersion: "TLSv1.2", // Ensures TLS 1.2 or higher is used
-  },
-
-  debug: true,
-  logger: true,
 });
 
 interface messageBody {
