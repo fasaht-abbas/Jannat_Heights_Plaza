@@ -163,14 +163,14 @@ const Apartments = () => {
       streetAddress: "123 Bahria Town",
       addressLocality: "Lahore",
       addressRegion: "Punjab",
-      postalCode: "54000",
+      postalCode: "53720",
       addressCountry: "PK",
     },
     offers: {
       "@type": "Offer",
       url: "https://www.jannatheights.com/apartments/furnished-rentals-bahria-town-lahore",
       priceCurrency: "PKR",
-      price: "50000",
+      price: "8000",
       availability: "https://schema.org/InStock",
       validFrom: "2024-08-15",
     },
@@ -240,13 +240,14 @@ const Apartments = () => {
         />
         <meta
           property="og:image"
-          content="https://www.jannatheights.com/images/jannat-heights-apartments.jpg"
+          content="https://www.jannatheightsplaza.live/jh192.png"
         />
         <meta
           property="og:url"
-          content="https://www.jannatheights.com/apartments/furnished-rentals-bahria-town-lahore"
+          content="https://www.jannatheightsplaza.live/apartments"
         />
         <meta property="og:type" content="website" />
+
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
@@ -258,11 +259,12 @@ const Apartments = () => {
         />
         <meta
           name="twitter:image"
-          content="https://www.jannatheights.com/images/jannat-heights-apartments.jpg"
+          content="https://www.jannatheightsplaza.live/jh512.png"
         />
+
         <link
           rel="canonical"
-          href="https://www.jannatheights.com/apartments/furnished-rentals-bahria-town-lahore"
+          href="https://www.jannatheightsplaza.live/apartments"
         />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}

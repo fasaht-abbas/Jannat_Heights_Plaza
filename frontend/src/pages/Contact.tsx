@@ -56,7 +56,7 @@ const ContactUs: React.FC = () => {
       "@type": "ContactPoint",
       contactType: "customer service",
       telephone: "+923001508712",
-      email: "info@jannatheights.com",
+      email: "info@jannatheightsplaza.live",
       availableLanguage: "English",
     },
     address: {
@@ -84,24 +84,29 @@ const ContactUs: React.FC = () => {
           property="og:description"
           content="Get in touch with Jannat Heights for inquiries, bookings, or support. We provide contact information and support options for our luxury apartments in Bahria Town Lahore."
         />
-        <meta property="og:image" content="URL_TO_YOUR_CONTACT_PAGE_IMAGE" />
+        <meta
+          property="og:image"
+          content="https://www.jannatheightsplaza.live/jh192.png"
+        />
         <meta
           property="og:url"
-          content="https://www.jannatheights.com/contact"
+          content="https://www.jannatheightsplaza.live/contact"
         />
         <meta property="og:type" content="website" />
 
-        {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content="Contact Us - Jannat Heights" />
         <meta
           name="twitter:description"
           content="Get in touch with Jannat Heights for inquiries, bookings, or support. We provide contact information and support options for our luxury apartments in Bahria Town Lahore."
         />
-        <meta name="twitter:image" content="URL_TO_YOUR_CONTACT_PAGE_IMAGE" />
+        <meta
+          name="twitter:image"
+          content="https://www.jannatheightsplaza.live/jh512.png"
+        />
         <meta
           name="twitter:url"
-          content="https://www.jannatheights.com/contact"
+          content="https://www.jannatheightsplaza.live/contact"
         />
 
         {/* Structured Data */}

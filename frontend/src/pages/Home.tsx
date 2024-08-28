@@ -49,23 +49,25 @@ const Home = () => {
       "@type": "PostalAddress",
       streetAddress: "Street Address Here",
       addressLocality: "Bahria Town",
-      addressRegion: "Lahore",
-      postalCode: "Postal Code Here",
+      addressRegion: "Punjab",
+      postalCode: "53720",
       addressCountry: "PK",
     },
     contactPoint: {
       "@type": "ContactPoint",
-      contactType: "customer service",
-      telephone: "+92-123-456-789",
-      email: "info@jannatheights.com",
+      contactType: "Customer Service",
+      telephone: "+92-3001508712",
+      email: "info@jannatheightsplaza.live",
+      availableLanguage: "English",
     },
     offers: {
       "@type": "Offer",
-      url: "https://www.jannatheights.com",
+      url: "https://www.jannatheightsplaza.live",
       priceCurrency: "PKR",
-      price: "Starting at 10000",
+      price: "10000", // Assuming this is the starting price
       itemOffered: {
         "@type": "Apartment",
+        name: "Furnished Apartment at Jannat Heights",
         numberOfRooms: 1,
         floorSize: {
           "@type": "QuantitativeValue",
@@ -73,12 +75,23 @@ const Home = () => {
           unitCode: "MTK",
         },
         additionalType: "https://schema.org/FurnishedApartment",
-        amenities:
-          "Fully equipped kitchens, air-conditioned rooms, modern furnishings",
+        amenityFeature: [
+          {
+            "@type": "LocationFeatureSpecification",
+            name: "Fully equipped kitchens",
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            name: "Air-conditioned rooms",
+          },
+          {
+            "@type": "LocationFeatureSpecification",
+            name: "Modern furnishings",
+          },
+        ],
       },
     },
   };
-
   return (
     <LayoutWrapper
       title="Jannat Heights - Luxury Furnished Apartments in Bahria Town Lahore"
@@ -96,11 +109,13 @@ const Home = () => {
           property="og:description"
           content="Explore the elegance of Jannat Heights in Bahria Town Lahore. Our furnished apartments offer modern living with fully equipped kitchens and air-conditioned comfort."
         />
-        <meta property="og:image" content="URL_TO_YOUR_IMAGE" />
-        <meta property="og:url" content="https://www.jannatheights.com" />
+        <meta
+          property="og:image"
+          content="https://www.jannatheightsplaza.live/jh192.png"
+        />
+        <meta property="og:url" content="https://www.jannatheightsplaza.live" />
         <meta property="og:type" content="website" />
 
-        {/* Twitter Card Tags */}
         <meta name="twitter:card" content="summary_large_image" />
         <meta
           name="twitter:title"
@@ -110,8 +125,14 @@ const Home = () => {
           name="twitter:description"
           content="Find your perfect home at Jannat Heights in Bahria Town Lahore. Luxurious, fully furnished apartments with all modern amenities."
         />
-        <meta name="twitter:image" content="URL_TO_YOUR_IMAGE" />
-        <meta name="twitter:url" content="https://www.jannatheights.com" />
+        <meta
+          name="twitter:image"
+          content="https://www.jannatheightsplaza.live/jh512.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://www.jannatheightsplaza.live"
+        />
         <script type="application/ld+json">
           {JSON.stringify(structuredData)}
         </script>

@@ -9,12 +9,12 @@ const Help: React.FC = () => {
     name: "Jannat Heights Help Center",
     description:
       "Get the assistance you need with Jannat Heights' Help Center. Browse FAQs, troubleshoot common issues, and contact our support team for expert help with your luxury apartment needs in Bahria Town Lahore.",
-    url: "https://www.jannatheights.com/help",
+    url: "https://www.jannatheightsplaza.live/help",
     contactPoint: {
       "@type": "ContactPoint",
-      contactType: "customer support",
-      telephone: "+92-123-456-789",
-      email: "support@jannatheights.com",
+      contactType: "Customer Support",
+      telephone: "+92-3001508712",
+      email: "support@jannatheightsplaza.live",
       availableLanguage: "English",
     },
     mainEntity: {
@@ -56,24 +56,29 @@ const Help: React.FC = () => {
             property="og:description"
             content="Get the assistance you need with Jannat Heights' Help Center. Browse FAQs, troubleshoot common issues, and contact our support team for expert help with your luxury apartment needs in Bahria Town Lahore."
           />
-          <meta property="og:image" content="URL_TO_YOUR_HELP_PAGE_IMAGE" />
+          <meta
+            property="og:image"
+            content="https://www.jannatheightsplaza.live/jh192.png"
+          />
           <meta
             property="og:url"
-            content="https://www.jannatheights.com/help"
+            content="https://www.jannatheightsplaza.live/help"
           />
           <meta property="og:type" content="website" />
 
-          {/* Twitter Card tags */}
           <meta name="twitter:card" content="summary_large_image" />
           <meta name="twitter:title" content="Help Center - Jannat Heights" />
           <meta
             name="twitter:description"
             content="Explore Jannat Heights' Help Center for answers to your questions, troubleshooting tips, and support options. We're dedicated to providing excellent service for our luxury apartments in Bahria Town Lahore."
           />
-          <meta name="twitter:image" content="URL_TO_YOUR_HELP_PAGE_IMAGE" />
+          <meta
+            name="twitter:image"
+            content="https://www.jannatheightsplaza.live/jh512.png"
+          />
           <meta
             name="twitter:url"
-            content="https://www.jannatheights.com/help"
+            content="https://www.jannatheightsplaza.live/help"
           />
 
           {/* Structured Data */}
